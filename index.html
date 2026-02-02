@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS | Consumer Recreation Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #141418;
+            --dark: #1c1c22;
+            --charcoal: #252530;
+            --steel: #3a3a48;
+            --silver: #9a9aaa;
+            --bone: #e0e0e8;
+            --white: #f8f8fc;
+            --red: #a33030;
+            --blood: #802020;
+            --gold: #d4a82a;
+            --green: #2d5a27;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--bone);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Puzzle piece floating animation */
+        .puzzle-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.15;
+        }
+
+        .puzzle-piece {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--silver);
+            animation: drift linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.5; }
+            100% { transform: translateY(110vh) rotate(180deg); opacity: 0; }
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 1px); }
+            94% { transform: translate(2px, -1px); }
+            96% { transform: translate(-1px, 2px); }
+            98% { transform: translate(1px, -2px); }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            background: radial-gradient(ellipse at center, var(--charcoal) 0%, var(--black) 70%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .crs-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.5em;
+            color: var(--silver);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 15vw, 10rem);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            animation: glitch 5s infinite;
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: var(--silver);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        .hero .status {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--red);
+            padding: 0.75rem 2rem;
+            border: 1px solid var(--red);
+            margin-bottom: 2rem;
+        }
+
+        .hero .status::before {
+            content: '● ';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .date-block {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            color: var(--bone);
+            letter-spacing: 0.1em;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--silver);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(5px); }
+        }
+
+        /* Navigation */
+        .quick-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--steel);
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-nav a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--silver);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .quick-nav a:hover {
+            color: var(--gold);
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--red);
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--silver);
+            margin-top: 0.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Participants */
+        .participants {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .participants { grid-template-columns: 1fr; }
+        }
+
+        .participant {
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .participant::before {
+            content: 'VERIFIED';
+            position: absolute;
+            top: -0.5rem;
+            right: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--red);
+            letter-spacing: 0.2em;
+        }
+
+        .participant-id {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--silver);
+            margin-bottom: 1rem;
+        }
+
+        .participant h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .participant .role {
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .participant .status-line {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--silver);
+            margin-top: 1rem;
+        }
+
+        /* Dossier */
+        .dossier {
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dossier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--steel);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dossier-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            color: var(--white);
+        }
+
+        .dossier-classification {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--red);
+            border: 1px solid var(--red);
+            padding: 0.25rem 0.75rem;
+            letter-spacing: 0.2em;
+        }
+
+        /* Rules */
+        .rules {
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            padding: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .rules ol {
+            list-style: none;
+            counter-reset: rule;
+        }
+
+        .rules li {
+            counter-increment: rule;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--charcoal);
+            display: flex;
+            gap: 1.5rem;
+            align-items: baseline;
+        }
+
+        .rules li:last-child { border-bottom: none; }
+
+        .rules li::before {
+            content: counter(rule, decimal-leading-zero);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--red);
+            min-width: 2rem;
+        }
+
+        /* Resort Cards */
+        .resort-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .resort-card {
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            overflow: hidden;
+        }
+
+        .resort-card.recommended {
+            border-color: var(--gold);
+            position: relative;
+        }
+
+        .resort-card.recommended::after {
+            content: 'GAME MASTER RECOMMENDATION';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--gold);
+            color: var(--black);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            padding: 0.25rem 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        .resort-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--steel);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .resort-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+        }
+
+        .resort-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+        }
+
+        .resort-drive {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--bone);
+            padding: 0.5rem 1rem;
+            background: var(--charcoal);
+        }
+
+        .resort-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1px;
+            background: var(--steel);
+        }
+
+        .resort-stat {
+            background: var(--charcoal);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--white);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .resort-body {
+            padding: 1.5rem;
+        }
+
+        .terrain-bar {
+            display: flex;
+            height: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .terrain-beginner { background: #4ade80; }
+        .terrain-intermediate { background: #3b82f6; }
+        .terrain-advanced { background: #1e1e1e; }
+
+        .terrain-legend {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.7rem;
+            color: var(--silver);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .terrain-legend span::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .terrain-legend .beg::before { background: #4ade80; }
+        .terrain-legend .int::before { background: #3b82f6; }
+        .terrain-legend .adv::before { background: #1e1e1e; border: 1px solid var(--silver); }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .pros-cons { grid-template-columns: 1fr; }
+        }
+
+        .pros h4, .cons h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.75rem;
+        }
+
+        .pros h4 { color: #4ade80; }
+        .cons h4 { color: var(--red); }
+
+        .pros ul, .cons ul {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .pros li, .cons li {
+            padding: 0.35rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .pros li::before {
+            content: '+';
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+        }
+
+        .cons li::before {
+            content: '−';
+            position: absolute;
+            left: 0;
+            color: var(--red);
+        }
+
+        .resort-footer {
+            padding: 1rem 1.5rem;
+            background: var(--charcoal);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .price-tag {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .price-tag .amount {
+            font-size: 1.2rem;
+            color: var(--white);
+        }
+
+        .price-tag .per {
+            font-size: 0.7rem;
+            color: var(--silver);
+        }
+
+        .pass-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid var(--steel);
+            color: var(--silver);
+        }
+
+        .pass-badge.ikon { border-color: #f97316; color: #f97316; }
+        .pass-badge.epic { border-color: #a855f7; color: #a855f7; }
+        .pass-badge.indy { border-color: #22c55e; color: #22c55e; }
+
+        /* Lodging Cards */
+        .lodging-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .lodging-card {
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            display: grid;
+            grid-template-columns: 1fr 200px;
+        }
+
+        @media (max-width: 700px) {
+            .lodging-card { grid-template-columns: 1fr; }
+        }
+
+        .lodging-body {
+            padding: 1.5rem;
+        }
+
+        .lodging-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            color: var(--white);
+            margin-bottom: 0.25rem;
+        }
+
+        .lodging-location {
+            font-size: 0.8rem;
+            color: var(--silver);
+            margin-bottom: 1rem;
+        }
+
+        .lodging-features {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.35rem 0.5rem;
+            background: var(--charcoal);
+            color: var(--bone);
+        }
+
+        .feature-tag.hot-tub {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .lodging-note {
+            font-size: 0.85rem;
+            color: var(--silver);
+        }
+
+        .lodging-pricing {
+            background: var(--charcoal);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            border-left: 1px solid var(--steel);
+        }
+
+        @media (max-width: 700px) {
+            .lodging-pricing { border-left: none; border-top: 1px solid var(--steel); }
+        }
+
+        .lodging-price {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .lodging-per {
+            font-size: 0.7rem;
+            color: var(--silver);
+            margin-bottom: 0.5rem;
+        }
+
+        .lodging-total {
+            font-size: 0.75rem;
+            color: var(--gold);
+        }
+
+        /* Flight Info */
+        .flight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1px;
+            background: var(--steel);
+            border: 1px solid var(--steel);
+        }
+
+        .flight-item {
+            background: var(--dark);
+            padding: 1.5rem;
+        }
+
+        .flight-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--silver);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .flight-value {
+            font-size: 1rem;
+            color: var(--bone);
+        }
+
+        .flight-value strong {
+            color: var(--white);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--red), var(--steel));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 0.3rem;
+            width: 9px;
+            height: 9px;
+            background: var(--black);
+            border: 2px solid var(--red);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--red);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--silver);
+        }
+
+        /* Budget Table */
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .budget-table th {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--silver);
+            letter-spacing: 0.1em;
+            text-align: left;
+            padding: 1rem;
+            background: var(--charcoal);
+            border-bottom: 1px solid var(--steel);
+        }
+
+        .budget-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--steel);
+            background: var(--dark);
+        }
+
+        .budget-table .item { color: var(--bone); }
+        .budget-table .low { font-family: 'IBM Plex Mono', monospace; color: #4ade80; }
+        .budget-table .high { font-family: 'IBM Plex Mono', monospace; color: var(--silver); }
+        .budget-table .note { font-size: 0.8rem; color: var(--silver); }
+
+        .budget-table tr.total td {
+            background: var(--charcoal);
+            font-weight: 600;
+        }
+
+        .budget-table tr.total .item { color: var(--white); }
+        .budget-table tr.total .low, .budget-table tr.total .high { color: var(--gold); font-size: 1.1rem; }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: 'AUTHORIZATION REQUIRED';
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--red);
+            letter-spacing: 0.3em;
+        }
+
+        .cta-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--silver);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--red);
+            color: var(--white);
+            border: 1px solid var(--red);
+        }
+
+        .btn-primary:hover { background: var(--blood); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--bone);
+            border: 1px solid var(--steel);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--silver);
+            color: var(--white);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--steel);
+        }
+
+        footer .quote {
+            font-style: italic;
+            color: var(--silver);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        footer .credit {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--steel);
+            letter-spacing: 0.2em;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--dark);
+            border: 1px solid var(--steel);
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal::before {
+            content: 'CRS AUTHORIZATION';
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--red);
+            letter-spacing: 0.3em;
+        }
+
+        .modal h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal p {
+            color: var(--silver);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .vote-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .vote-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            padding: 1rem;
+            background: var(--charcoal);
+            border: 1px solid var(--steel);
+            color: var(--bone);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            letter-spacing: 0.05em;
+        }
+
+        .vote-btn:hover { border-color: var(--silver); }
+        .vote-btn.selected {
+            background: var(--red);
+            border-color: var(--red);
+            color: var(--white);
+        }
+
+        .close-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            background: none;
+            border: none;
+            color: var(--silver);
+            cursor: pointer;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+        }
+
+        .success-message {
+            display: none;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+        .success-message.show { display: block; }
+
+        /* Collapsible sections */
+        .expand-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: var(--charcoal);
+            border: 1px solid var(--steel);
+            color: var(--silver);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .expand-btn:hover {
+            color: var(--white);
+            border-color: var(--silver);
+        }
+    </style>
+</head>
+<body>
+    <div class="puzzle-container" id="puzzle"></div>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="crs-logo">Consumer Recreation Services</div>
+        <h1>THE GAME</h1>
+        <p class="tagline">It will make your life worth living</p>
+        <div class="status">YOUR TICKETS HAVE BEEN APPROVED</div>
+        <div class="date-block">FEBRUARY 25 – MARCH 1, 2026</div>
+        <div class="scroll-indicator">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Quick Nav -->
+    <nav class="quick-nav">
+        <a href="#participants">Participants</a>
+        <a href="#resorts">Resorts</a>
+        <a href="#lodging">Lodging</a>
+        <a href="#flights">Flights</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#budget">Budget</a>
+    </nav>
+
+    <!-- Participants -->
+    <section id="participants">
+        <div class="section-header">
+            <div class="section-number">SECTION 01</div>
+            <h2 class="section-title">PARTICIPANTS</h2>
+        </div>
+
+        <div class="participants">
+            <div class="participant">
+                <div class="participant-id">CRS-2026-001</div>
+                <h3>BEN</h3>
+                <div class="role">Game Master</div>
+                <div class="status-line">SEATTLE OPERATIVE</div>
+            </div>
+            <div class="participant">
+                <div class="participant-id">CRS-2026-002</div>
+                <h3>BRIAN</h3>
+                <div class="role">Logistics</div>
+                <div class="status-line">PORTLAND OPERATIVE</div>
+            </div>
+            <div class="participant">
+                <div class="participant-id">CRS-2026-003</div>
+                <h3>ROBERT</h3>
+                <div class="role">Field Intel</div>
+                <div class="status-line">LOS ANGELES OPERATIVE</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rules -->
+    <section>
+        <div class="section-header">
+            <div class="section-number">SECTION 02</div>
+            <h2 class="section-title">RULES OF ENGAGEMENT</h2>
+        </div>
+
+        <div class="rules">
+            <ol>
+                <li>The Game has already begun. There is no opting out.</li>
+                <li>What happens on the mountain stays on the mountain.</li>
+                <li>The Melania documentary will be screened. Attendance is mandatory.</li>
+                <li>Brian's optics doctrine applies: "Boys weekend can't appear too indulgent or else it won't last."</li>
+                <li>Leave them wanting more. — Spice Girls Protocol</li>
+                <li>Trust no one. Except the hot tub.</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- Audio Intelligence -->
+    <section>
+        <div class="section-header">
+            <div class="section-number">SECTION 03</div>
+            <h2 class="section-title">AUDIO INTELLIGENCE</h2>
+        </div>
+
+        <div class="dossier">
+            <div class="dossier-header">
+                <div class="dossier-title">OPERATIONAL SOUNDTRACK</div>
+                <div class="dossier-classification">ENCODED</div>
+            </div>
+            <div style="text-align: center; padding: 2rem 0;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--red); letter-spacing: 0.3em; margin-bottom: 1.5rem;">INTERCEPTED TRANSMISSION</div>
+                <div style="font-size: 1.1rem; color: var(--bone); line-height: 1.8; max-width: 500px; margin: 0 auto;">
+                    "What genre of music is the playlist I am making for this trip based on?"
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--silver); margin-top: 1.5rem; letter-spacing: 0.15em;">
+                    — GAME MASTER, ENCRYPTED CHANNEL
+                </div>
+                <div style="margin-top: 2rem; padding: 1rem; border: 1px solid var(--steel); display: inline-block;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--gold); letter-spacing: 0.2em;">
+                        🎵 PLAYLIST WILL BE REVEALED UPON ARRIVAL 🎵
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resorts -->
+    <section id="resorts">
+        <div class="section-header">
+            <div class="section-number">SECTION 04</div>
+            <h2 class="section-title">TARGET LOCATION ANALYSIS</h2>
+            <p class="section-subtitle">Full intelligence from Reddit, ski forums, and PNW locals. Optimized for guys who ski twice a year and value vibes over prestige.</p>
+        </div>
+
+        <!-- Reddit Intel Banner -->
+        <div class="dossier" style="margin-bottom: 2rem; border-color: var(--gold);">
+            <div class="dossier-header">
+                <div class="dossier-title">🎿 LOCAL INTEL FROM THE FORUMS</div>
+                <div class="dossier-classification">REDDIT / SKI GROUPS</div>
+            </div>
+            <div style="font-size: 0.9rem; color: var(--bone); line-height: 1.7;">
+                <p style="margin-bottom: 1rem;"><em>"For a group of three guys who ski twice a year, the message board consensus leans heavily toward <strong style="color: var(--gold);">Mission Ridge</strong> or <strong style="color: var(--gold);">White Pass</strong> over the mainstream Seattle resorts."</em></p>
+                <p style="color: var(--silver);">The vibe: While Crystal is the "big dog," locals describe it as feeling "corporate" and stressful on weekends. Mission and White Pass are praised for their "independent, blue-collar vibes" and lack of "lift line madness."</p>
+            </div>
+        </div>
+
+        <div class="resort-grid">
+
+            <!-- Mission Ridge - LOCALS' PICK -->
+            <div class="resort-card recommended">
+                <div class="resort-header">
+                    <div>
+                        <div class="resort-name">MISSION RIDGE</div>
+                        <div class="resort-tag">🏆 LOCALS' PICK • DRY POWDER • SUNNY SKIES</div>
+                    </div>
+                    <div class="resort-drive">2.5 HR DRIVE</div>
+                </div>
+                <div class="resort-stats">
+                    <div class="resort-stat">
+                        <div class="stat-value">2,000</div>
+                        <div class="stat-label">Skiable Acres</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">2,250'</div>
+                        <div class="stat-label">Vertical Drop</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">DRY</div>
+                        <div class="stat-label">Powder Type</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">300+</div>
+                        <div class="stat-label">Sunny Days</div>
+                    </div>
+                </div>
+                <div class="resort-body">
+                    <div class="terrain-bar">
+                        <div class="terrain-beginner" style="width: 10%"></div>
+                        <div class="terrain-intermediate" style="width: 60%"></div>
+                        <div class="terrain-advanced" style="width: 30%"></div>
+                    </div>
+                    <div class="terrain-legend">
+                        <span class="beg">10% Beginner</span>
+                        <span class="int">60% Intermediate</span>
+                        <span class="adv">30% Advanced</span>
+                    </div>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>+ THE REDDIT TAKE</h4>
+                            <ul>
+                                <li><strong>Utah-quality dry powder</strong> — no "Cascade Concrete"</li>
+                                <li>"Big mountain feel" with fast, rolly fall lines</li>
+                                <li>When west side is socked in, Mission has clear skies</li>
+                                <li>Wenatchee = "mini-Bend" with breweries + food scene</li>
+                                <li>Pybus Market, 6 craft breweries, wine tasting</li>
+                                <li>No lift line madness — locals' hidden gem</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>− THE CATCH</h4>
+                            <ul>
+                                <li>Longest drive (~2.5 hrs via Stevens)</li>
+                                <li>Lodging in Wenatchee (20 min from slopes)</li>
+                                <li>Can be windy</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="resort-footer">
+                    <div class="price-tag">
+                        <span class="amount">$80–$120</span>
+                        <span class="per">/day lift ticket</span>
+                    </div>
+                    <div class="pass-badge indy">INDY PASS</div>
+                </div>
+            </div>
+
+            <!-- White Pass - LOCALS' PICK -->
+            <div class="resort-card recommended">
+                <div class="resort-header">
+                    <div>
+                        <div class="resort-name">WHITE PASS</div>
+                        <div class="resort-tag">🏆 LOCALS' PICK • BEST INTERMEDIATE • CHILL VIBES</div>
+                    </div>
+                    <div class="resort-drive">2.5 HR DRIVE</div>
+                </div>
+                <div class="resort-stats">
+                    <div class="resort-stat">
+                        <div class="stat-value">1,500</div>
+                        <div class="stat-label">Skiable Acres</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">2,000'</div>
+                        <div class="stat-label">Vertical Drop</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">300"</div>
+                        <div class="stat-label">Annual Snow</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Lifts</div>
+                    </div>
+                </div>
+                <div class="resort-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>+ THE REDDIT TAKE</h4>
+                            <ul>
+                                <li><strong>"The Soul of the PNW"</strong> — low-key, friendly staff</li>
+                                <li>Back bowl = wide open blue groomers for cruising</li>
+                                <li>Mt. Rainier views</li>
+                                <li>Packwood = quintessential ski town</li>
+                                <li>A-frame cabin culture + Blue Spruce burgers</li>
+                                <li>Packwood Brewing for après</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>− THE CATCH</h4>
+                            <ul>
+                                <li>Only 5 lifts — smaller mountain</li>
+                                <li>Peak days require reservations</li>
+                                <li>Less nightlife than Wenatchee</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="resort-footer">
+                    <div class="price-tag">
+                        <span class="amount">$75–$95</span>
+                        <div class="per">/day lift ticket</div>
+                    </div>
+                    <div class="pass-badge indy">INDY PASS</div>
+                </div>
+            </div>
+
+            <!-- Crystal Mountain - The "Big Dog" -->
+            <div class="resort-card">
+                <div class="resort-header">
+                    <div>
+                        <div class="resort-name">CRYSTAL MOUNTAIN</div>
+                        <div class="resort-tag">THE "BIG DOG" • LARGEST IN WA • RAINIER VIEWS</div>
+                    </div>
+                    <div class="resort-drive">2 HR DRIVE</div>
+                </div>
+                <div class="resort-stats">
+                    <div class="resort-stat">
+                        <div class="stat-value">2,600</div>
+                        <div class="stat-label">Skiable Acres</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">2,472'</div>
+                        <div class="stat-label">Vertical Drop</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">486"</div>
+                        <div class="stat-label">Annual Snow</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Lifts</div>
+                    </div>
+                </div>
+                <div class="resort-body">
+                    <div class="terrain-bar">
+                        <div class="terrain-beginner" style="width: 11%"></div>
+                        <div class="terrain-intermediate" style="width: 54%"></div>
+                        <div class="terrain-advanced" style="width: 35%"></div>
+                    </div>
+                    <div class="terrain-legend">
+                        <span class="beg">11% Beginner</span>
+                        <span class="int">54% Intermediate</span>
+                        <span class="adv">35% Advanced</span>
+                    </div>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>+ THE PRESTIGE PICK</h4>
+                            <ul>
+                                <li>Biggest terrain variety in WA</li>
+                                <li>Summit House at 6,872' — bucket list dining</li>
+                                <li>Only gondola in Washington state</li>
+                                <li>Robert's pick from the chat</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>− THE REDDIT WARNING</h4>
+                            <ul>
+                                <li><strong>"Corporate" feel</strong> — Alterra-owned, pricey</li>
+                                <li>Weekend parking wars and crowds</li>
+                                <li>Expensive lodging, scattered options</li>
+                                <li>May be overkill for twice-a-year skiers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="resort-footer">
+                    <div class="price-tag">
+                        <span class="amount">$62–$199</span>
+                        <span class="per">/day lift ticket</span>
+                    </div>
+                    <div class="pass-badge ikon">IKON PASS</div>
+                </div>
+            </div>
+
+            <!-- Stevens Pass -->
+            <div class="resort-card">
+                <div class="resort-header">
+                    <div>
+                        <div class="resort-name">STEVENS PASS</div>
+                        <div class="resort-tag">CLOSEST BIG MOUNTAIN • NIGHT SKIING</div>
+                    </div>
+                    <div class="resort-drive">1.5 HR DRIVE</div>
+                </div>
+                <div class="resort-stats">
+                    <div class="resort-stat">
+                        <div class="stat-value">1,125</div>
+                        <div class="stat-label">Skiable Acres</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">1,784'</div>
+                        <div class="stat-label">Vertical Drop</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">460"</div>
+                        <div class="stat-label">Annual Snow</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">Lifts</div>
+                    </div>
+                </div>
+                <div class="resort-body">
+                    <div class="terrain-bar">
+                        <div class="terrain-beginner" style="width: 11%"></div>
+                        <div class="terrain-intermediate" style="width: 54%"></div>
+                        <div class="terrain-advanced" style="width: 35%"></div>
+                    </div>
+                    <div class="terrain-legend">
+                        <span class="beg">11% Beginner</span>
+                        <span class="int">54% Intermediate</span>
+                        <span class="adv">35% Advanced</span>
+                    </div>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>+ ADVANTAGES</h4>
+                            <ul>
+                                <li>Shortest drive to "real" mountain</li>
+                                <li>Excellent intermediate terrain (Hogsback, Brooks chairs)</li>
+                                <li>Night skiing until 10pm</li>
+                                <li>Leavenworth nearby (great town)</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>− DISADVANTAGES</h4>
+                            <ul>
+                                <li>EXTREMELY crowded on weekends</li>
+                                <li>Parking fills by 10am on powder days</li>
+                                <li>No on-mountain lodging</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="resort-footer">
+                    <div class="price-tag">
+                        <span class="amount">$120–$159</span>
+                        <span class="per">/day lift ticket</span>
+                    </div>
+                    <div class="pass-badge epic">EPIC PASS</div>
+                </div>
+            </div>
+
+            <!-- Summit at Snoqualmie -->
+            <div class="resort-card">
+                <div class="resort-header">
+                    <div>
+                        <div class="resort-name">SUMMIT AT SNOQUALMIE</div>
+                        <div class="resort-tag">CLOSEST TO SEATTLE • BUDGET OPTION</div>
+                    </div>
+                    <div class="resort-drive">45 MIN DRIVE</div>
+                </div>
+                <div class="resort-stats">
+                    <div class="resort-stat">
+                        <div class="stat-value">1,914</div>
+                        <div class="stat-label">Skiable Acres</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">1,914'</div>
+                        <div class="stat-label">Vertical Drop</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">435"</div>
+                        <div class="stat-label">Annual Snow</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">25</div>
+                        <div class="stat-label">Lifts</div>
+                    </div>
+                </div>
+                <div class="resort-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>+ ADVANTAGES</h4>
+                            <ul>
+                                <li>Only 45 minutes from Seattle</li>
+                                <li>Summit West is perfect for intermediates</li>
+                                <li>Most affordable lift tickets</li>
+                                <li>Four separate base areas</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>− DISADVANTAGES</h4>
+                            <ul>
+                                <li>Feels more like "local hill" than destination</li>
+                                <li>Alpental (best terrain) is too advanced</li>
+                                <li>May feel underwhelming for trip</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="resort-footer">
+                    <div class="price-tag">
+                        <span class="amount">$89–$125</span>
+                        <span class="per">/day lift ticket</span>
+                    </div>
+                    <div class="pass-badge ikon">IKON PASS</div>
+                </div>
+            </div>
+
+            <!-- Mt. Baker -->
+            <div class="resort-card">
+                <div class="resort-header">
+                    <div>
+                        <div class="resort-name">MT. BAKER</div>
+                        <div class="resort-tag">LEGENDARY POWDER • 658" ANNUAL</div>
+                    </div>
+                    <div class="resort-drive">2.5–3 HR DRIVE</div>
+                </div>
+                <div class="resort-stats">
+                    <div class="resort-stat">
+                        <div class="stat-value">1,000+</div>
+                        <div class="stat-label">Skiable Acres</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">1,500'</div>
+                        <div class="stat-label">Vertical Drop</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">658"</div>
+                        <div class="stat-label">Annual Snow</div>
+                    </div>
+                    <div class="resort-stat">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">Lifts</div>
+                    </div>
+                </div>
+                <div class="resort-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>+ ADVANTAGES</h4>
+                            <ul>
+                                <li>World-record snowfall (658" avg)</li>
+                                <li>Legendary powder reputation</li>
+                                <li>Less crowded, old-school vibe</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>− DISADVANTAGES</h4>
+                            <ul>
+                                <li>NO lodging at mountain (RV parking only)</li>
+                                <li>Day-use mountain only</li>
+                                <li>More advanced-focused terrain</li>
+                                <li>Not on any pass (full price always)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="resort-footer">
+                    <div class="price-tag">
+                        <span class="amount">$80–$95</span>
+                        <span class="per">/day lift ticket</span>
+                    </div>
+                    <div class="pass-badge">NO PASS</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Lodging -->
+    <section id="lodging">
+        <div class="section-header">
+            <div class="section-number">SECTION 05</div>
+            <h2 class="section-title">SAFEHOUSE OPTIONS</h2>
+            <p class="section-subtitle">All options verified to have hot tub capability. Prices are per person for 4 nights, split 3 ways.</p>
+        </div>
+
+        <div class="lodging-grid">
+
+            <!-- Best Value -->
+            <div class="dossier" style="margin-bottom: 1rem;">
+                <div class="dossier-header">
+                    <div class="dossier-title">CRYSTAL MOUNTAIN AREA</div>
+                    <div class="dossier-classification">20-45 MIN TO SLOPES</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">GREENWATER RIVERFRONT CABIN</div>
+                    <div class="lodging-location">Greenwater, WA — 20 min to Crystal</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">RIVER VIEWS</span>
+                        <span class="feature-tag">SLEEPS 8</span>
+                    </div>
+                    <div class="lodging-note">Overlooks White River. Closest viable area to Crystal Mountain.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$381</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">($286/night total)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">LOG HOME — ENUMCLAW</div>
+                    <div class="lodging-location">Enumclaw, WA — 45 min to Crystal</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">FIREPLACE</span>
+                        <span class="feature-tag">SLEEPS 8</span>
+                    </div>
+                    <div class="lodging-note">VRBO #866399. Classic mountain cabin with all amenities.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$467</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">($350/night total)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">LUXURY MOUNTAIN CHALET</div>
+                    <div class="lodging-location">Enumclaw, WA — 45 min to Crystal</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">3+ BEDROOMS</span>
+                        <span class="feature-tag">MTN VIEWS</span>
+                        <span class="feature-tag">HIGH-END</span>
+                    </div>
+                    <div class="lodging-note">VRBO #719954. Higher-end option with premium amenities.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$584</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">($438/night total)</div>
+                </div>
+            </div>
+
+            <!-- Leavenworth Option -->
+            <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem;">
+                <div class="dossier-header">
+                    <div class="dossier-title">STEVENS PASS / LEAVENWORTH AREA</div>
+                    <div class="dossier-classification">BEST TOWN EXPERIENCE</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">PNW HIDEOUT</div>
+                    <div class="lodging-location">Near Leavenworth — 30 min to Stevens</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">2.5 ACRES</span>
+                        <span class="feature-tag">FIRE PIT</span>
+                        <span class="feature-tag">SECLUDED</span>
+                    </div>
+                    <div class="lodging-note">Private property on acreage. Leavenworth is a great Bavarian-themed town with restaurants and bars.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$533+</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">($400+/night total)</div>
+                </div>
+            </div>
+
+            <!-- Mission Ridge / Wenatchee - LOCALS' PICK -->
+            <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem; border-color: var(--gold);">
+                <div class="dossier-header">
+                    <div class="dossier-title">🏆 MISSION RIDGE / WENATCHEE</div>
+                    <div class="dossier-classification">LOCALS' PICK</div>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--silver); margin-top: 1rem;">
+                    <em>"Wenatchee is becoming a mini-Bend, OR with growing craft beer and food scene"</em> — Reddit
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">WHISPERING RIDGE RETREAT</div>
+                    <div class="lodging-location">6 miles to Mission Ridge — 20 min to downtown</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">SCENIC VIEWS</span>
+                        <span class="feature-tag">CLOSEST</span>
+                    </div>
+                    <div class="lodging-note">Closest option to the slopes. Perfect for early mornings.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$500+</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">(~$375/night total)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">DOC ROY'S LEGACY A-FRAME</div>
+                    <div class="lodging-location">Fish Lake area — 2.5 secluded acres</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">PRIVATE HOT TUB</span>
+                        <span class="feature-tag">A-FRAME</span>
+                        <span class="feature-tag">SECLUDED</span>
+                        <span class="feature-tag">3 BED</span>
+                    </div>
+                    <div class="lodging-note">Classic A-frame cabin on Fish Lake with Butte Peak views.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$580+</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">(~$435/night total)</div>
+                </div>
+            </div>
+
+            <!-- Wenatchee Après-Ski Scene -->
+            <div class="dossier" style="margin-top: 1.5rem;">
+                <div class="dossier-header">
+                    <div class="dossier-title">WENATCHEE APRÈS-SKI INTEL</div>
+                    <div class="dossier-classification">FOOD & DRINK</div>
+                </div>
+                <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍺 BREWERIES (6 TOTAL)</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            <strong>Wenatchee Valley Brewing</strong> (Overlord Pale Ale) • <strong>Badger Mountain</strong> (organic) • <strong>Saddle Rock</strong> (Rattlesnake Ridge IPA) • <strong>Columbia Valley Brewing</strong> — all walkable on "Brewers Row" trail
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍔 BURGERS & FOOD</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            <strong>McGlinn's Public House</strong> (wood-fired) • <strong>Rail Station & Ale House</strong> (Guinness-glazed burger) • <strong>Dusty's In-N-Out</strong> (famous garlic fries) • <strong>Pybus Market</strong> for gourmet bites
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍷 WINE TASTING</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            <strong>Chateau Faire le Pont</strong> (full restaurant + winery) • <strong>Crayelle Cellars</strong> • <strong>Jones of Washington</strong> at Pybus Market
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🎱 NIGHTLIFE</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            <strong>Tap & Putt</strong> (putt-putt + bingo) • <strong>Sidecar Lounge</strong> (craft cocktails) • <strong>KAOS Bar</strong> (dancing) • <strong>Wally's House of Booze</strong> (live music dive)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- White Pass / Packwood - LOCALS' PICK -->
+            <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem; border-color: var(--gold);">
+                <div class="dossier-header">
+                    <div class="dossier-title">🏆 WHITE PASS / PACKWOOD</div>
+                    <div class="dossier-classification">LOCALS' PICK</div>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--silver); margin-top: 1rem;">
+                    <em>"Quintessential ski town feel — more relaxed than the touristy bustle of Leavenworth"</em> — Reddit
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">SOLARIUM — LUXURY A-FRAME</div>
+                    <div class="lodging-location">Packwood — 20 min to White Pass</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">6-PERSON HOT TUB</span>
+                        <span class="feature-tag">2 ACRES</span>
+                        <span class="feature-tag">RAINIER VIEWS</span>
+                        <span class="feature-tag">PICKLEBALL</span>
+                    </div>
+                    <div class="lodging-note">"100% the best Airbnb I've ever stayed in" — Starlink internet, heated bathroom floors. Featured in Bigfoot documentary.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$600+</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">(premium property)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">HEARTWOOD CABIN — A-FRAME</div>
+                    <div class="lodging-location">Near Packwood — 30 min to White Pass</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">CEDAR HOT TUB</span>
+                        <span class="feature-tag">A-FRAME</span>
+                        <span class="feature-tag">RIVER ACCESS</span>
+                        <span class="feature-tag">2 BED</span>
+                    </div>
+                    <div class="lodging-note">Custom A-frame with Cowlitz River access and Butte Peak views.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$450+</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">(~$340/night total)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">SPACIOUS PACKWOOD CABIN</div>
+                    <div class="lodging-location">Packwood — riverfront, near slopes</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">RIVERFRONT</span>
+                        <span class="feature-tag">BEST VALUE</span>
+                    </div>
+                    <div class="lodging-note">VRBO available. Great mid-range option with all the essentials.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$445</div>
+                    <div class="lodging-per">per person / 4 nights</div>
+                    <div class="lodging-total">($334/night total)</div>
+                </div>
+            </div>
+
+            <!-- Packwood Après-Ski Scene -->
+            <div class="dossier" style="margin-top: 1.5rem;">
+                <div class="dossier-header">
+                    <div class="dossier-title">PACKWOOD APRÈS-SKI INTEL</div>
+                    <div class="dossier-classification">FOOD & DRINK</div>
+                </div>
+                <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍺 PACKWOOD BREWING CO.</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            Historic 1933 building restored. Award-winning craft brews. <strong>Outdoor fire pits, live music on weekends.</strong> Mon 1-9, Fri 1-10, Sat 12-10, Sun 12-9.
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍔 BLUE SPRUCE SALOON & GRILL</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            <strong>The move for post-ski burgers.</strong> Sasquash burger (double beef + Canadian bacon), Reuben, thick potato salad. Bar games, karaoke, sports. Mon-Fri 11am-11pm.
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍕 MORE OPTIONS</div>
+                        <div style="font-size: 0.85rem; color: var(--bone);">
+                            <strong>Longmire Springs Brewing</strong> (new, Thai food truck) • <strong>Cruisers Pizza</strong> (Packwood Special) • <strong>Cliff Droppers</strong> (hearty burgers) • <strong>Mountain Goat</strong> (bakery + espresso)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="dossier" style="margin-top: 2rem;">
+            <div class="dossier-header">
+                <div class="dossier-title">BOOKING INTEL</div>
+                <div class="dossier-classification">ACTIONABLE</div>
+            </div>
+            <div style="font-size: 0.9rem; color: var(--bone);">
+                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">White Pass Reservations:</strong> Peak days require advance booking — check capacity before committing to lodging.</p>
+                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Book ASAP:</strong> February is peak season. A-frame cabins go fast.</p>
+                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Hidden Costs:</strong> Add 10-15% for taxes/fees on quoted prices.</p>
+                <p><strong style="color: var(--white);">Hot Tub Verification:</strong> Always call to confirm hot tub is operational in winter.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flights -->
+    <section id="flights">
+        <div class="section-header">
+            <div class="section-number">SECTION 06</div>
+            <h2 class="section-title">TRANSPORT INTELLIGENCE</h2>
+            <p class="section-subtitle">Flight data for both operatives. Book ~40 days out for best prices. February is cheapest month.</p>
+        </div>
+
+        <!-- Brian - Portland -->
+        <div class="dossier" style="margin-bottom: 1.5rem;">
+            <div class="dossier-header">
+                <div class="dossier-title">BRIAN — PORTLAND (PDX)</div>
+                <div class="dossier-classification">SHORTEST FLIGHT</div>
+            </div>
+            <div class="flight-grid" style="border: none;">
+                <div class="flight-item">
+                    <div class="flight-label">ROUTE</div>
+                    <div class="flight-value"><strong>Portland (PDX)</strong> → Seattle (SEA)</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">FLIGHT TIME</div>
+                    <div class="flight-value"><strong>55 minutes</strong> direct</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">PRICE RANGE</div>
+                    <div class="flight-value"><strong>$79–$240</strong> roundtrip</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">CHEAPEST ONE-WAY</div>
+                    <div class="flight-value"><strong>$46</strong> on Alaska Airlines</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">DIRECT CARRIERS</div>
+                    <div class="flight-value"><strong>Alaska</strong>, <strong>Delta</strong> (68 flights/day)</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">BEST DAY TO FLY</div>
+                    <div class="flight-value"><strong>Thursday evening</strong> — lowest fares</div>
+                </div>
+            </div>
+            <div style="margin-top: 1rem; text-align: center;">
+                <a href="https://www.google.com/travel/flights?q=flights%20from%20portland%20to%20seattle%20feb%2025%202026" target="_blank" class="btn btn-secondary">SEARCH PDX → SEA</a>
+            </div>
+        </div>
+
+        <!-- Robert - Los Angeles -->
+        <div class="dossier" style="margin-bottom: 1.5rem;">
+            <div class="dossier-header">
+                <div class="dossier-title">ROBERT — LOS ANGELES (LAX)</div>
+                <div class="dossier-classification">BUDGET OPTIONS AVAILABLE</div>
+            </div>
+            <div class="flight-grid" style="border: none;">
+                <div class="flight-item">
+                    <div class="flight-label">ROUTE</div>
+                    <div class="flight-value"><strong>Los Angeles (LAX)</strong> → Seattle (SEA)</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">FLIGHT TIME</div>
+                    <div class="flight-value"><strong>2.5 hours</strong> direct</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">PRICE RANGE</div>
+                    <div class="flight-value"><strong>$66–$290</strong> roundtrip (avg $214)</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">CHEAPEST ONE-WAY</div>
+                    <div class="flight-value"><strong>$28</strong> on Frontier</div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">DIRECT CARRIERS</div>
+                    <div class="flight-value"><strong>Alaska</strong>, <strong>Delta</strong>, <strong>United</strong>, <strong>Frontier</strong></div>
+                </div>
+                <div class="flight-item">
+                    <div class="flight-label">BEST DAYS TO FLY</div>
+                    <div class="flight-value"><strong>Tue/Wed/Sat</strong> — cheapest departures</div>
+                </div>
+            </div>
+            <div style="margin-top: 1rem; text-align: center;">
+                <a href="https://www.google.com/travel/flights?q=flights%20from%20los%20angeles%20to%20seattle%20feb%2025%202026" target="_blank" class="btn btn-secondary">SEARCH LAX → SEA</a>
+            </div>
+        </div>
+
+        <!-- General Tips -->
+        <div class="dossier">
+            <div class="dossier-header">
+                <div class="dossier-title">BOOKING INTEL</div>
+                <div class="dossier-classification">ACTIONABLE</div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); margin-bottom: 0.5rem;">GEAR STRATEGY</div>
+                    <div style="color: var(--white);"><strong>Rent on-mountain</strong> — no bags needed</div>
+                </div>
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); margin-bottom: 0.5rem;">OPTIMAL BOOKING</div>
+                    <div style="color: var(--white);"><strong>40 days</strong> before departure</div>
+                </div>
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); margin-bottom: 0.5rem;">CHEAPEST MONTH</div>
+                    <div style="color: var(--white);"><strong>February</strong> — you're in luck</div>
+                </div>
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); margin-bottom: 0.5rem;">DRIVE ALTERNATIVE</div>
+                    <div style="color: var(--white);">PDX→SEA: <strong>3 hrs</strong> / LAX→SEA: <strong>18 hrs</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline">
+        <div class="section-header">
+            <div class="section-number">SECTION 07</div>
+            <h2 class="section-title">SEQUENCE OF EVENTS</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">DAY 00 — WEDNESDAY, FEB 25</div>
+                <div class="timeline-title">ARRIVAL</div>
+                <div class="timeline-desc">Brian lands from Portland. Robert lands from LA. Rendezvous at Ben's location. Rest. Acclimatize. The Game has already begun — you just don't know it yet.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">DAY 01 — THURSDAY, FEB 26</div>
+                <div class="timeline-title">INFILTRATION</div>
+                <div class="timeline-desc">Convoy departs Seattle for the mountain. Transit to safehouse (2-3 hrs depending on destination). Unpack. Hot tub debrief. First moves are made.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">DAY 02 — FRIDAY, FEB 27</div>
+                <div class="timeline-title">FIELD OPERATIONS I</div>
+                <div class="timeline-desc">Full day on mountain. Summit House lunch if Crystal. Blues and greens per operational parameters. Après-ski intel gathering.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">DAY 03 — SATURDAY, FEB 28</div>
+                <div class="timeline-title">FIELD OPERATIONS II</div>
+                <div class="timeline-desc">Second day deployment. Explore different terrain. Evening: Melania documentary screening. Mandatory attendance.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">DAY 04 — SUNDAY, MAR 1</div>
+                <div class="timeline-title">EXTRACTION</div>
+                <div class="timeline-desc">Optional morning sortie (half-day tickets available). Pack out. Return convoy to Seattle. Flights home. The Game concludes. Or does it?</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget -->
+    <section id="budget">
+        <div class="section-header">
+            <div class="section-number">SECTION 08</div>
+            <h2 class="section-title">FINANCIAL ALLOCATION</h2>
+            <p class="section-subtitle">Per-person estimates based on Crystal Mountain as primary target. All costs split 3 ways where applicable.</p>
+        </div>
+
+        <div class="dossier">
+            <table class="budget-table">
+                <thead>
+                    <tr>
+                        <th>ITEM</th>
+                        <th>LOW ESTIMATE</th>
+                        <th>HIGH ESTIMATE</th>
+                        <th>NOTES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="item">Airfare — Brian (PDX→SEA)</td>
+                        <td class="low">$79</td>
+                        <td class="high">$240</td>
+                        <td class="note">55 min flight, Alaska/Delta</td>
+                    </tr>
+                    <tr>
+                        <td class="item">Airfare — Robert (LAX→SEA)</td>
+                        <td class="low">$66</td>
+                        <td class="high">$290</td>
+                        <td class="note">2.5 hr flight, multiple carriers</td>
+                    </tr>
+                    <tr>
+                        <td class="item">Lodging (4 nights)</td>
+                        <td class="low">$380</td>
+                        <td class="high">$585</td>
+                        <td class="note">Split 3 ways, hot tub required</td>
+                    </tr>
+                    <tr>
+                        <td class="item">Lift Tickets (2 days)</td>
+                        <td class="low">$125</td>
+                        <td class="high">$320</td>
+                        <td class="note">Book online in advance for savings</td>
+                    </tr>
+                    <tr>
+                        <td class="item">Equipment Rental (2 days)</td>
+                        <td class="low">$80</td>
+                        <td class="high">$140</td>
+                        <td class="note">Skis/board, boots, poles — $40-70/day</td>
+                    </tr>
+                    <tr>
+                        <td class="item">Gas (Ben's vehicle)</td>
+                        <td class="low">$25</td>
+                        <td class="high">$40</td>
+                        <td class="note">Share of fuel costs</td>
+                    </tr>
+                    <tr>
+                        <td class="item">Food & Drinks</td>
+                        <td class="low">$150</td>
+                        <td class="high">$250</td>
+                        <td class="note">5 days, mix of groceries + dining</td>
+                    </tr>
+                    <tr class="total">
+                        <td class="item">TOTAL — BRIAN (Portland)</td>
+                        <td class="low">$839</td>
+                        <td class="high">$1,575</td>
+                        <td class="note"></td>
+                    </tr>
+                    <tr class="total">
+                        <td class="item">TOTAL — ROBERT (LA)</td>
+                        <td class="low">$826</td>
+                        <td class="high">$1,625</td>
+                        <td class="note"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem;">
+            <div class="dossier" style="text-align: center; padding: 1.5rem;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); letter-spacing: 0.1em; margin-bottom: 0.5rem;">BUDGET TARGET</div>
+                <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: #4ade80;">~$900</div>
+                <div style="font-size: 0.8rem; color: var(--silver);">per person</div>
+            </div>
+            <div class="dossier" style="text-align: center; padding: 1.5rem;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); letter-spacing: 0.1em; margin-bottom: 0.5rem;">COMFORT TARGET</div>
+                <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold);">~$1,200</div>
+                <div style="font-size: 0.8rem; color: var(--silver);">per person</div>
+            </div>
+            <div class="dossier" style="text-align: center; padding: 1.5rem;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--silver); letter-spacing: 0.1em; margin-bottom: 0.5rem;">TRIP TOTAL (3 PEOPLE)</div>
+                <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--white);">$2,500–$4,700</div>
+                <div style="font-size: 0.8rem; color: var(--silver);">all-in (incl. rentals)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section>
+        <div class="cta-section">
+            <h2>CONFIRM YOUR PARTICIPATION</h2>
+            <p>Review complete. Cast your vote for the target destination. Once confirmed, there is no turning back.</p>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="openModal()">CAST YOUR VOTE</button>
+                <a href="https://www.missionridge.com" target="_blank" class="btn btn-secondary">MISSION RIDGE</a>
+                <a href="https://skiwhitepass.com" target="_blank" class="btn btn-secondary">WHITE PASS</a>
+                <a href="https://www.crystalmountainresort.com" target="_blank" class="btn btn-secondary">CRYSTAL MTN</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="quote">"Leave them wanting more."<br>— The Spice Girls Protocol</p>
+        <p class="credit">CRS — CONSUMER RECREATION SERVICES — EST. 2026</p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h3>SELECT YOUR TARGET</h3>
+            <p>Your choice will be logged and transmitted to the Game Master.</p>
+            <div class="vote-buttons" id="voteButtons">
+                <button class="vote-btn" onclick="selectVote(this, 'mission')">MISSION RIDGE — Locals' Pick • Dry Powder • Wenatchee Scene</button>
+                <button class="vote-btn" onclick="selectVote(this, 'whitepass')">WHITE PASS — Locals' Pick • Chill Vibes • Packwood A-Frames</button>
+                <button class="vote-btn" onclick="selectVote(this, 'crystal')">CRYSTAL MOUNTAIN — The Prestige Play • Robert's Pick</button>
+                <button class="vote-btn" onclick="selectVote(this, 'dealer')">DEALER'S CHOICE — Trust The Game Master</button>
+            </div>
+            <button class="btn btn-primary" onclick="submitVote()" id="submitBtn" style="display:none;">CONFIRM SELECTION</button>
+            <div class="success-message" id="successMsg">TRANSMISSION PREPARED.<br>SEND THE EMAIL TO COMPLETE YOUR VOTE.<br><br><span style="font-size: 0.7rem; color: var(--silver);">Your vote will be transmitted to the Game Master.</span></div>
+            <br><br>
+            <button class="close-btn" onclick="closeModal()">[CLOSE]</button>
+        </div>
+    </div>
+
+    <script>
+        // Puzzle pieces
+        function createPuzzle() {
+            const container = document.getElementById('puzzle');
+            const pieces = ['🧩', '◈', '◇', '▣', '▢'];
+            for (let i = 0; i < 15; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.animationDuration = (Math.random() * 20 + 15) + 's';
+                piece.style.animationDelay = Math.random() * 15 + 's';
+                piece.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(piece);
+            }
+        }
+        createPuzzle();
+
+        function openModal() { document.getElementById('modal').classList.add('active'); }
+        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
+        let selectedVote = null;
+        const voteLabels = {
+            'mission': 'MISSION RIDGE — Dry Powder + Wenatchee Scene',
+            'whitepass': 'WHITE PASS — Chill Vibes + Packwood A-Frames',
+            'crystal': 'CRYSTAL MOUNTAIN — The Prestige Play',
+            'dealer': "DEALER'S CHOICE — Trust The Game Master"
+        };
+
+        function selectVote(btn, choice) {
+            document.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedVote = choice;
+            document.getElementById('submitBtn').style.display = 'inline-block';
+        }
+
+        function submitVote() {
+            if (selectedVote) {
+                const subject = encodeURIComponent('🎿 THE GAME — My Vote Is In');
+                const body = encodeURIComponent(
+                    `Game Master,\n\n` +
+                    `I have reviewed the intelligence briefing and cast my vote.\n\n` +
+                    `MY SELECTION: ${voteLabels[selectedVote]}\n\n` +
+                    `The Game continues.\n\n` +
+                    `— [Your Name]`
+                );
+
+                // Open email client
+                window.location.href = `mailto:ben@omdigital.com?subject=${subject}&body=${body}`;
+
+                // Show success after brief delay
+                setTimeout(() => {
+                    document.getElementById('voteButtons').style.display = 'none';
+                    document.getElementById('submitBtn').style.display = 'none';
+                    document.getElementById('successMsg').classList.add('show');
+                }, 500);
+            }
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Smooth scroll for nav
+        document.querySelectorAll('.quick-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
