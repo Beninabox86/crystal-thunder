@@ -790,12 +790,32 @@
             background: var(--dark);
             border: 1px solid var(--steel);
             display: grid;
-            grid-template-columns: 1fr 200px;
+            grid-template-columns: 200px 1fr 180px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .lodging-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .lodging-card-image {
+            width: 100%;
+            height: 100%;
+            min-height: 140px;
+            object-fit: cover;
+            display: block;
         }
 
         @media (max-width: 700px) {
             .lodging-card {
                 grid-template-columns: 1fr;
+            }
+
+            .lodging-card-image {
+                height: 180px;
             }
         }
 
@@ -1899,9 +1919,9 @@
                     <div class="dossier-title">CRYSTAL MOUNTAIN AREA</div>
                     <div class="dossier-classification">20-45 MIN TO SLOPES</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">GREENWATER RIVERFRONT CABIN</div>
                     <div class="lodging-location">Greenwater, WA — 20 min to Crystal</div>
@@ -1918,9 +1938,9 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">($286/night total)</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">LOG HOME — ENUMCLAW</div>
                     <div class="lodging-location">Enumclaw, WA — 45 min to Crystal</div>
@@ -1937,9 +1957,9 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">($350/night total)</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">LUXURY MOUNTAIN CHALET</div>
                     <div class="lodging-location">Enumclaw, WA — 45 min to Crystal</div>
@@ -1956,7 +1976,7 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">($438/night total)</div>
                 </div>
-            </div>
+            </a>
 
             <!-- Leavenworth Option -->
             <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem;">
@@ -1966,7 +1986,7 @@
                 </div>
             </div>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">PNW HIDEOUT</div>
                     <div class="lodging-location">Near Leavenworth — 30 min to Stevens</div>
@@ -1995,9 +2015,9 @@
                 <div style="font-size: 0.85rem; color: var(--silver); margin-top: 1rem;">
                     <em>"Wenatchee is becoming a mini-Bend, OR with growing craft beer and food scene"</em> — Reddit
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">WHISPERING RIDGE RETREAT</div>
                     <div class="lodging-location">6 miles to Mission Ridge — 20 min to downtown</div>
@@ -2014,9 +2034,9 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">(~$375/night total)</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">DOC ROY'S LEGACY A-FRAME</div>
                     <div class="lodging-location">Fish Lake area — 2.5 secluded acres</div>
@@ -2033,7 +2053,7 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">(~$435/night total)</div>
                 </div>
-            </div>
+            </a>
 
             <!-- Wenatchee Après-Ski Scene -->
             <div class="dossier" style="margin-top: 1.5rem;">
@@ -2094,9 +2114,9 @@
                     <em>"Quintessential ski town feel — more relaxed than the touristy bustle of Leavenworth"</em> —
                     Reddit
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">SOLARIUM — LUXURY A-FRAME</div>
                     <div class="lodging-location">Packwood — 20 min to White Pass</div>
@@ -2114,9 +2134,9 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">(premium property)</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">HEARTWOOD CABIN — A-FRAME</div>
                     <div class="lodging-location">Near Packwood — 30 min to White Pass</div>
@@ -2133,9 +2153,9 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">(~$340/night total)</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="lodging-card">
+            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">SPACIOUS PACKWOOD CABIN</div>
                     <div class="lodging-location">Packwood — riverfront, near slopes</div>
@@ -2152,7 +2172,7 @@
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">($334/night total)</div>
                 </div>
-            </div>
+            </a>
 
             <!-- Packwood Après-Ski Scene -->
             <div class="dossier" style="margin-top: 1.5rem;">
