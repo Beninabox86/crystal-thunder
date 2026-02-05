@@ -1460,25 +1460,20 @@
     <section id="resorts">
         <div class="section-header">
             <div class="section-number">SECTION 04</div>
-            <h2 class="section-title">TARGET LOCATION ANALYSIS</h2>
-            <p class="section-subtitle">Full intelligence from Reddit, ski forums, and PNW locals. Optimized for guys
-                who ski twice a year and value vibes over prestige.</p>
+            <h2 class="section-title">TARGET CONFIRMED</h2>
+            <p class="section-subtitle">Mission Ridge — the unanimous choice. Dry powder, 300+ sunny days, and Wenatchee's growing food & drink scene await.</p>
         </div>
 
-        <!-- Reddit Intel Banner -->
+        <!-- Decision Banner -->
         <div class="dossier" style="margin-bottom: 2rem; border-color: var(--gold);">
             <div class="dossier-header">
-                <div class="dossier-title">🎿 LOCAL INTEL FROM THE FORUMS</div>
-                <div class="dossier-classification">REDDIT / SKI GROUPS</div>
+                <div class="dossier-title">🎿 DECISION REACHED</div>
+                <div class="dossier-classification">MISSION RIDGE</div>
             </div>
             <div style="font-size: 0.9rem; color: var(--bone); line-height: 1.7;">
-                <p style="margin-bottom: 1rem;"><em>"For a group of three guys who ski twice a year, the message board
-                        consensus leans heavily toward <strong style="color: var(--gold);">Mission Ridge</strong> or
-                        <strong style="color: var(--gold);">White Pass</strong> over the mainstream Seattle
-                        resorts."</em></p>
-                <p style="color: var(--silver);">The vibe: While Crystal is the "big dog," locals describe it as feeling
-                    "corporate" and stressful on weekends. Mission and White Pass are praised for their "independent,
-                    blue-collar vibes" and lack of "lift line madness."</p>
+                <p style="margin-bottom: 1rem;"><em>"Wenatchee is becoming a <strong style="color: var(--gold);">mini-Bend, OR</strong> with growing craft beer and food scene"</em> — Reddit</p>
+                <p style="color: var(--silver);">The verdict: Utah-quality dry powder on the east side of the Cascades, no "Cascade Concrete."
+                    When the west side is socked in, Mission has clear skies. Plus: 6 breweries, wine tasting, and après-ski options in Wenatchee.</p>
             </div>
         </div>
 
@@ -1557,6 +1552,20 @@
                         PASS ↗</a>
                 </div>
             </div>
+
+            <!-- Archived Resorts Section -->
+            <div class="dossier" style="margin-top: 2rem;">
+                <div class="dossier-header">
+                    <div class="dossier-title">ARCHIVED INTEL — FUTURE TRIPS</div>
+                    <div class="dossier-classification">NEXT YEAR?</div>
+                </div>
+                <div style="color: var(--silver); font-size: 0.85rem; margin-top: 1rem;">
+                    The following resorts remain on our radar for future operations.
+                </div>
+                <button class="expand-btn" onclick="toggleArchived(this)" style="margin-top: 1rem; background: var(--charcoal); border: 1px solid var(--steel); color: var(--bone); padding: 0.75rem 1.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; cursor: pointer;">SHOW ARCHIVED RESORTS</button>
+            </div>
+
+            <div id="archived-resorts" style="display: none;">
 
             <!-- White Pass - LOCALS' PICK -->
             <div class="resort-card recommended">
@@ -1899,6 +1908,8 @@
                 </div>
             </div>
 
+            </div><!-- End archived-resorts -->
+
         </div>
     </section>
 
@@ -1907,136 +1918,144 @@
         <div class="section-header">
             <div class="section-number">SECTION 05</div>
             <h2 class="section-title">SAFEHOUSE OPTIONS</h2>
-            <p class="section-subtitle">Requirements: hot tub, 2–3 bedrooms, 3 guests. Prices are per person for 3
-                nights, split 3 ways.</p>
+            <p class="section-subtitle">Mission Ridge / Wenatchee area. Hot tub preferred, 2–3 bedrooms, some privacy with outdoor space.</p>
+        </div>
+
+        <!-- Area Map -->
+        <div class="dossier" style="margin-bottom: 2rem;">
+            <div class="dossier-header">
+                <div class="dossier-title">OPERATIONAL AREA MAP</div>
+                <div class="dossier-classification">TERRAIN INTEL</div>
+            </div>
+            <div style="position: relative; background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 50%, #1a2520 100%); border-radius: 4px; padding: 2rem; margin-top: 1rem; min-height: 300px; overflow: hidden;">
+                <!-- Mountain texture overlay -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><polygon fill=\"%23ffffff\" points=\"0,100 50,20 100,100\"/></svg>'); background-size: 200px; background-repeat: repeat-x; background-position: bottom;"></div>
+
+                <!-- Mission Ridge - Top -->
+                <div style="position: absolute; top: 15%; left: 50%; transform: translateX(-50%); text-align: center;">
+                    <div style="width: 60px; height: 60px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1.5rem;">⛷️</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em;">MISSION RIDGE</div>
+                    <div style="font-size: 0.65rem; color: var(--silver);">6,820' summit</div>
+                </div>
+
+                <!-- Whispering Ridge - Near Mission Ridge -->
+                <div style="position: absolute; top: 35%; left: 35%; text-align: center;">
+                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem; border: 2px solid var(--gold);"></div>
+                    <div style="font-size: 0.6rem; color: var(--bone);">Whispering Ridge</div>
+                    <div style="font-size: 0.55rem; color: var(--silver);">6 mi to slopes</div>
+                </div>
+
+                <!-- Fish Lake / Doc Roy's -->
+                <div style="position: absolute; top: 30%; left: 70%; text-align: center;">
+                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem; border: 2px solid var(--gold);"></div>
+                    <div style="font-size: 0.6rem; color: var(--bone);">Doc Roy's A-Frame</div>
+                    <div style="font-size: 0.55rem; color: var(--silver);">Fish Lake</div>
+                </div>
+
+                <!-- Cashmere -->
+                <div style="position: absolute; top: 55%; left: 20%; text-align: center;">
+                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem;"></div>
+                    <div style="font-size: 0.6rem; color: var(--bone);">Cashmere</div>
+                    <div style="font-size: 0.55rem; color: var(--silver);">30 min to slopes</div>
+                </div>
+
+                <!-- Wenatchee - Center bottom -->
+                <div style="position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
+                    <div style="width: 50px; height: 50px; background: var(--charcoal); border: 2px solid var(--bone); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1.2rem;">🍺</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--bone); letter-spacing: 0.1em;">WENATCHEE</div>
+                    <div style="font-size: 0.65rem; color: var(--silver);">Brewers Row • Nightlife</div>
+                </div>
+
+                <!-- East Wenatchee -->
+                <div style="position: absolute; bottom: 25%; right: 20%; text-align: center;">
+                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem;"></div>
+                    <div style="font-size: 0.6rem; color: var(--bone);">East Wenatchee</div>
+                    <div style="font-size: 0.55rem; color: var(--silver);">5 min to downtown</div>
+                </div>
+
+                <!-- River Cabin -->
+                <div style="position: absolute; top: 45%; left: 55%; text-align: center;">
+                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem;"></div>
+                    <div style="font-size: 0.6rem; color: var(--bone);">River Cabin</div>
+                    <div style="font-size: 0.55rem; color: var(--silver);">Monitor</div>
+                </div>
+
+                <!-- Columbia River indication -->
+                <div style="position: absolute; bottom: 10%; left: 10%; right: 10%; height: 3px; background: linear-gradient(90deg, transparent, rgba(100,150,200,0.3), rgba(100,150,200,0.5), rgba(100,150,200,0.3), transparent); border-radius: 2px;"></div>
+                <div style="position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); font-size: 0.55rem; color: rgba(100,150,200,0.6); letter-spacing: 0.2em;">COLUMBIA RIVER</div>
+            </div>
+        </div>
+
+        <!-- Decision Framework -->
+        <div class="dossier" style="margin-bottom: 2rem;">
+            <div class="dossier-header">
+                <div class="dossier-title">LODGING DECISION FRAMEWORK</div>
+                <div class="dossier-classification">KEY TRADEOFFS</div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🎿 PRIORITIZE SLOPES</div>
+                    <div style="font-size: 0.85rem; color: var(--bone);">
+                        <strong>Whispering Ridge</strong> — 6 miles to Mission Ridge. First tracks, no morning drive stress. Trade-off: 20 min to Wenatchee nightlife.
+                    </div>
+                </div>
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🏠 PRIORITIZE LODGE EXPERIENCE</div>
+                    <div style="font-size: 0.85rem; color: var(--bone);">
+                        <strong>Doc Roy's A-Frame</strong> — Classic ski cabin aesthetic. 2.5 secluded acres, lake views. The vibe. Trade-off: furthest from town, highest price.
+                    </div>
+                </div>
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">🍺 PRIORITIZE WENATCHEE</div>
+                    <div style="font-size: 0.85rem; color: var(--bone);">
+                        <strong>East Wenatchee Home</strong> — Walk to Brewers Row. Modern amenities, lowest price. Trade-off: house not cabin, 25 min to slopes.
+                    </div>
+                </div>
+                <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">⚖️ BALANCED APPROACH</div>
+                    <div style="font-size: 0.85rem; color: var(--bone);">
+                        <strong>River Cabin</strong> or <strong>Cashmere</strong> — Middle ground on all factors. Secluded feel, reasonable drive to both slopes and town.
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--steel); font-size: 0.8rem; color: var(--silver);">
+                <strong style="color: var(--bone);">Bottom line:</strong> If the lodge experience matters most, go Doc Roy's. If skiing matters most, go Whispering Ridge. If nightlife matters most, go East Wenatchee. All options have hot tubs and outdoor space.
+            </div>
         </div>
 
         <div class="lodging-grid">
 
-            <!-- Best Value -->
-            <div class="dossier" style="margin-bottom: 1rem;">
-                <div class="dossier-header">
-                    <div class="dossier-title">CRYSTAL MOUNTAIN AREA</div>
-                    <div class="dossier-classification">20-45 MIN TO SLOPES</div>
-                </div>
-            </a>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">GREENWATER RIVERFRONT CABIN</div>
-                    <div class="lodging-location">Greenwater, WA — 20 min to Crystal</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">HOT TUB</span>
-                        <span class="feature-tag">3 BEDROOMS</span>
-                        <span class="feature-tag">RIVER VIEWS</span>
-                        <span class="feature-tag">SLEEPS 8</span>
-                    </div>
-                    <div class="lodging-note">Overlooks White River. Closest viable area to Crystal Mountain.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$286</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">($286/night total)</div>
-                </div>
-            </a>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">LOG HOME — ENUMCLAW</div>
-                    <div class="lodging-location">Enumclaw, WA — 45 min to Crystal</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">HOT TUB</span>
-                        <span class="feature-tag">3 BEDROOMS</span>
-                        <span class="feature-tag">FIREPLACE</span>
-                        <span class="feature-tag">SLEEPS 8</span>
-                    </div>
-                    <div class="lodging-note">VRBO #866399. Classic mountain cabin with all amenities.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$350</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">($350/night total)</div>
-                </div>
-            </a>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">LUXURY MOUNTAIN CHALET</div>
-                    <div class="lodging-location">Enumclaw, WA — 45 min to Crystal</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">HOT TUB</span>
-                        <span class="feature-tag">3+ BEDROOMS</span>
-                        <span class="feature-tag">MTN VIEWS</span>
-                        <span class="feature-tag">HIGH-END</span>
-                    </div>
-                    <div class="lodging-note">VRBO #719954. Higher-end option with premium amenities.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$438</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">($438/night total)</div>
-                </div>
-            </a>
-
-            <!-- Leavenworth Option -->
-            <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem;">
-                <div class="dossier-header">
-                    <div class="dossier-title">STEVENS PASS / LEAVENWORTH AREA</div>
-                    <div class="dossier-classification">BEST TOWN EXPERIENCE</div>
-                </div>
-            </div>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">PNW HIDEOUT</div>
-                    <div class="lodging-location">Near Leavenworth — 30 min to Stevens</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">HOT TUB</span>
-                        <span class="feature-tag">2.5 ACRES</span>
-                        <span class="feature-tag">FIRE PIT</span>
-                        <span class="feature-tag">SECLUDED</span>
-                    </div>
-                    <div class="lodging-note">Private property on acreage. Leavenworth is a great Bavarian-themed town
-                        with restaurants and bars.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$400+</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">($400+/night total)</div>
-                </div>
-            </div>
-
-            <!-- Mission Ridge / Wenatchee - LOCALS' PICK -->
-            <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem; border-color: var(--gold);">
+            <!-- Mission Ridge / Wenatchee -->
+            <div class="dossier" style="margin-bottom: 1rem; border-color: var(--gold);">
                 <div class="dossier-header">
                     <div class="dossier-title">🏆 MISSION RIDGE / WENATCHEE</div>
-                    <div class="dossier-classification">LOCALS' PICK</div>
+                    <div class="dossier-classification">OUR DESTINATION</div>
                 </div>
                 <div style="font-size: 0.85rem; color: var(--silver); margin-top: 1rem;">
-                    <em>"Wenatchee is becoming a mini-Bend, OR with growing craft beer and food scene"</em> — Reddit
+                    All options within 30 min of slopes. Prices per person for 3 nights, split 3 ways.
                 </div>
-            </a>
+            </div>
 
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
+            <div class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">WHISPERING RIDGE RETREAT</div>
-                    <div class="lodging-location">6 miles to Mission Ridge — 20 min to downtown</div>
+                    <div class="lodging-location">6 miles to Mission Ridge — 20 min to downtown Wenatchee</div>
                     <div class="lodging-features">
                         <span class="feature-tag hot-tub">HOT TUB</span>
                         <span class="feature-tag">3 BEDROOMS</span>
                         <span class="feature-tag">SCENIC VIEWS</span>
                         <span class="feature-tag">CLOSEST</span>
                     </div>
-                    <div class="lodging-note">Closest option to the slopes. Perfect for early mornings.</div>
+                    <div class="lodging-note">Closest option to the slopes. Perfect for early mornings and first tracks.</div>
                 </div>
                 <div class="lodging-pricing">
                     <div class="lodging-price">$375+</div>
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">(~$375/night total)</div>
                 </div>
-            </a>
+            </div>
 
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
+            <div class="lodging-card">
                 <div class="lodging-body">
                     <div class="lodging-name">DOC ROY'S LEGACY A-FRAME</div>
                     <div class="lodging-location">Fish Lake area — 2.5 secluded acres</div>
@@ -2046,14 +2065,71 @@
                         <span class="feature-tag">SECLUDED</span>
                         <span class="feature-tag">3 BED</span>
                     </div>
-                    <div class="lodging-note">Classic A-frame cabin on Fish Lake with Butte Peak views.</div>
+                    <div class="lodging-note">Classic A-frame cabin on Fish Lake with Butte Peak views. Maximum privacy.</div>
                 </div>
                 <div class="lodging-pricing">
                     <div class="lodging-price">$435+</div>
                     <div class="lodging-per">per person / 3 nights</div>
                     <div class="lodging-total">(~$435/night total)</div>
                 </div>
-            </a>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">EAST WENATCHEE MODERN HOME</div>
+                    <div class="lodging-location">East Wenatchee — 25 min to Mission Ridge, 5 min to downtown</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">FENCED YARD</span>
+                        <span class="feature-tag">FIRE PIT</span>
+                    </div>
+                    <div class="lodging-note">Best of both worlds — easy walk to Brewers Row, quick drive to slopes. Private backyard with hot tub and outdoor entertaining space.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$350+</div>
+                    <div class="lodging-per">per person / 3 nights</div>
+                    <div class="lodging-total">(~$350/night total)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">CASHMERE FOOTHILLS RETREAT</div>
+                    <div class="lodging-location">Cashmere — 30 min to Mission Ridge, 15 min to Wenatchee</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">PRIVATE HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">5 ACRES</span>
+                        <span class="feature-tag">FOREST VIEWS</span>
+                    </div>
+                    <div class="lodging-note">Perched 2000' up in the ponderosa forest. Total seclusion with fire pit deck. Cashmere has excellent local bakeries and cafes.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$400+</div>
+                    <div class="lodging-per">per person / 3 nights</div>
+                    <div class="lodging-total">(~$400/night total)</div>
+                </div>
+            </div>
+
+            <div class="lodging-card">
+                <div class="lodging-body">
+                    <div class="lodging-name">WENATCHEE RIVER CABIN</div>
+                    <div class="lodging-location">Monitor — 20 min to Mission Ridge, on the river</div>
+                    <div class="lodging-features">
+                        <span class="feature-tag hot-tub">RIVERFRONT HOT TUB</span>
+                        <span class="feature-tag">3 BEDROOMS</span>
+                        <span class="feature-tag">RIVER ACCESS</span>
+                        <span class="feature-tag">SECLUDED</span>
+                    </div>
+                    <div class="lodging-note">Soak in the hot tub overlooking the Wenatchee River. Surrounded by trees, 40 feet from the water.</div>
+                </div>
+                <div class="lodging-pricing">
+                    <div class="lodging-price">$380+</div>
+                    <div class="lodging-per">per person / 3 nights</div>
+                    <div class="lodging-total">(~$380/night total)</div>
+                </div>
+            </div>
 
             <!-- Wenatchee Après-Ski Scene -->
             <div class="dossier" style="margin-top: 1.5rem;">
@@ -2104,114 +2180,6 @@
                 </div>
             </div>
 
-            <!-- White Pass / Packwood - LOCALS' PICK -->
-            <div class="dossier" style="margin-bottom: 1rem; margin-top: 2rem; border-color: var(--gold);">
-                <div class="dossier-header">
-                    <div class="dossier-title">🏆 WHITE PASS / PACKWOOD</div>
-                    <div class="dossier-classification">LOCALS' PICK</div>
-                </div>
-                <div style="font-size: 0.85rem; color: var(--silver); margin-top: 1rem;">
-                    <em>"Quintessential ski town feel — more relaxed than the touristy bustle of Leavenworth"</em> —
-                    Reddit
-                </div>
-            </a>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">SOLARIUM — LUXURY A-FRAME</div>
-                    <div class="lodging-location">Packwood — 20 min to White Pass</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">6-PERSON HOT TUB</span>
-                        <span class="feature-tag">2 ACRES</span>
-                        <span class="feature-tag">RAINIER VIEWS</span>
-                        <span class="feature-tag">PICKLEBALL</span>
-                    </div>
-                    <div class="lodging-note">"100% the best Airbnb I've ever stayed in" — Starlink internet, heated
-                        bathroom floors. Featured in Bigfoot documentary.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$450+</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">(premium property)</div>
-                </div>
-            </a>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">HEARTWOOD CABIN — A-FRAME</div>
-                    <div class="lodging-location">Near Packwood — 30 min to White Pass</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">CEDAR HOT TUB</span>
-                        <span class="feature-tag">A-FRAME</span>
-                        <span class="feature-tag">RIVER ACCESS</span>
-                        <span class="feature-tag">2 BED</span>
-                    </div>
-                    <div class="lodging-note">Custom A-frame with Cowlitz River access and Butte Peak views.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$340+</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">(~$340/night total)</div>
-                </div>
-            </a>
-
-            <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" rel="noopener" class="lodging-card">
-                <div class="lodging-body">
-                    <div class="lodging-name">SPACIOUS PACKWOOD CABIN</div>
-                    <div class="lodging-location">Packwood — riverfront, near slopes</div>
-                    <div class="lodging-features">
-                        <span class="feature-tag hot-tub">HOT TUB</span>
-                        <span class="feature-tag">3 BEDROOMS</span>
-                        <span class="feature-tag">RIVERFRONT</span>
-                        <span class="feature-tag">BEST VALUE</span>
-                    </div>
-                    <div class="lodging-note">VRBO available. Great mid-range option with all the essentials.</div>
-                </div>
-                <div class="lodging-pricing">
-                    <div class="lodging-price">$334</div>
-                    <div class="lodging-per">per person / 3 nights</div>
-                    <div class="lodging-total">($334/night total)</div>
-                </div>
-            </a>
-
-            <!-- Packwood Après-Ski Scene -->
-            <div class="dossier" style="margin-top: 1.5rem;">
-                <div class="dossier-header">
-                    <div class="dossier-title">PACKWOOD APRÈS-SKI INTEL</div>
-                    <div class="dossier-classification">FOOD & DRINK</div>
-                </div>
-                <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
-                    <div>
-                        <div
-                            style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">
-                            🍺 PACKWOOD BREWING CO.</div>
-                        <div style="font-size: 0.85rem; color: var(--bone);">
-                            Historic 1933 building restored. Award-winning craft brews. <strong>Outdoor fire pits, live
-                                music on weekends.</strong> Mon 1-9, Fri 1-10, Sat 12-10, Sun 12-9.
-                        </div>
-                    </div>
-                    <div>
-                        <div
-                            style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">
-                            🍔 BLUE SPRUCE SALOON & GRILL</div>
-                        <div style="font-size: 0.85rem; color: var(--bone);">
-                            <strong>The move for post-ski burgers.</strong> Sasquash burger (double beef + Canadian
-                            bacon), Reuben, thick potato salad. Bar games, karaoke, sports. Mon-Fri 11am-11pm.
-                        </div>
-                    </div>
-                    <div>
-                        <div
-                            style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); margin-bottom: 0.5rem;">
-                            🍕 MORE OPTIONS</div>
-                        <div style="font-size: 0.85rem; color: var(--bone);">
-                            <strong>Longmire Springs Brewing</strong> (new, Thai food truck) • <strong>Cruisers
-                                Pizza</strong> (Packwood Special) • <strong>Cliff Droppers</strong> (hearty burgers) •
-                            <strong>Mountain Goat</strong> (bakery + espresso)
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <div class="dossier" style="margin-top: 2rem;">
@@ -2220,14 +2188,10 @@
                 <div class="dossier-classification">ACTIONABLE</div>
             </div>
             <div style="font-size: 0.9rem; color: var(--bone);">
-                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">White Pass Reservations:</strong>
-                    Peak days require advance booking — check capacity before committing to lodging.</p>
-                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Book ASAP:</strong> February is
-                    peak season. A-frame cabins go fast.</p>
-                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Hidden Costs:</strong> Add 10-15%
-                    for taxes/fees on quoted prices.</p>
-                <p><strong style="color: var(--white);">Hot Tub Verification:</strong> Always call to confirm hot tub is
-                    operational in winter.</p>
+                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Book ASAP:</strong> February is peak season. Properties with hot tubs go fast in Wenatchee area.</p>
+                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Hidden Costs:</strong> Add 10-15% for taxes/fees on quoted prices.</p>
+                <p style="margin-bottom: 1rem;"><strong style="color: var(--white);">Hot Tub Verification:</strong> Always call to confirm hot tub is operational in winter.</p>
+                <p><strong style="color: var(--white);">Mission Ridge Lift Tickets:</strong> Book online in advance for best rates ($80-$120/day).</p>
             </div>
         </div>
 
@@ -2235,8 +2199,7 @@
             <div
                 style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 0.75rem;">
                 AIRBNB WISHLIST — THE GAME - SKI TRIP 2026</div>
-            <div style="font-size: 0.9rem; color: var(--bone); margin-bottom: 1.25rem;">7 vetted safehouses across all
-                target areas. Hot tub + 3 bedrooms confirmed. Review and vote.</div>
+            <div style="font-size: 0.9rem; color: var(--bone); margin-bottom: 1.25rem;">Wenatchee area properties with hot tubs and outdoor space. Vote for your preferred safehouse below.</div>
             <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" class="btn btn-primary"
                 style="display: inline-block;">VIEW WISHLIST ↗</a>
         </div>
@@ -2377,14 +2340,14 @@
                 <div class="timeline-date">DAY 00 — THURSDAY, FEB 26</div>
                 <div class="timeline-title">ARRIVAL & INFILTRATION</div>
                 <div class="timeline-desc">Brian lands from Portland. Robert lands from LA. Rendezvous at Ben's
-                    location. Convoy departs Seattle for the mountain. Transit to safehouse (2-3 hrs
-                    depending on destination). Unpack. Hot tub debrief. The Game has begun.</div>
+                    location. Convoy departs Seattle for Mission Ridge (~2.5 hrs via Stevens Pass).
+                    Transit to Wenatchee-area safehouse. Unpack. Hot tub debrief. The Game has begun.</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-date">DAY 01 — FRIDAY, FEB 27</div>
                 <div class="timeline-title">FIELD OPERATIONS I</div>
-                <div class="timeline-desc">Full day on mountain. Summit House lunch if Crystal. Blues and greens per
-                    operational parameters. Après-ski intel gathering.</div>
+                <div class="timeline-desc">Full day on Mission Ridge. Dry powder, 300+ days of sunshine.
+                    Blues and greens per operational parameters. Après-ski: brewery crawl on Wenatchee's "Brewers Row."</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-date">DAY 02 — SATURDAY, FEB 28</div>
@@ -2406,8 +2369,7 @@
         <div class="section-header">
             <div class="section-number">SECTION 08</div>
             <h2 class="section-title">FINANCIAL ALLOCATION</h2>
-            <p class="section-subtitle">Per-person estimates based on Crystal Mountain as primary target. All costs
-                split 3 ways where applicable.</p>
+            <p class="section-subtitle">Per-person estimates based on Mission Ridge. All costs split 3 ways where applicable.</p>
         </div>
 
         <div class="dossier">
@@ -2441,9 +2403,9 @@
                     </tr>
                     <tr>
                         <td class="item">Lift Tickets (2 days)</td>
-                        <td class="low">$125</td>
-                        <td class="high">$320</td>
-                        <td class="note">Book online in advance for savings</td>
+                        <td class="low">$160</td>
+                        <td class="high">$240</td>
+                        <td class="note">Mission Ridge: $80-$120/day, book online</td>
                     </tr>
                     <tr>
                         <td class="item">Equipment Rental (2 days)</td>
@@ -2509,14 +2471,11 @@
     <!-- CTA -->
     <section>
         <div class="cta-section">
-            <h2>CONFIRM YOUR PARTICIPATION</h2>
-            <p>Review complete. Cast your vote for the target destination. Once confirmed, there is no turning back.</p>
+            <h2>VOTE FOR YOUR SAFEHOUSE</h2>
+            <p>Destination confirmed: Mission Ridge. Now vote for your preferred Wenatchee-area lodging.</p>
             <div class="btn-group">
                 <button class="btn btn-primary" onclick="openModal()">CAST YOUR VOTE</button>
-                <a href="https://www.missionridge.com" target="_blank" class="btn btn-secondary">MISSION RIDGE</a>
-                <a href="https://skiwhitepass.com" target="_blank" class="btn btn-secondary">WHITE PASS</a>
-                <a href="https://www.crystalmountainresort.com" target="_blank" class="btn btn-secondary">CRYSTAL
-                    MTN</a>
+                <a href="https://www.missionridge.com" target="_blank" class="btn btn-secondary">MISSION RIDGE ↗</a>
                 <a href="https://www.airbnb.com/wishlists/1934239180" target="_blank" class="btn btn-secondary">AIRBNB
                     WISHLIST ↗</a>
             </div>
@@ -2532,17 +2491,15 @@
     <!-- Modal -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
-            <h3>SELECT YOUR TARGET</h3>
-            <p>Your choice will be logged and transmitted to the Game Master.</p>
+            <h3>SELECT YOUR SAFEHOUSE</h3>
+            <p>Mission Ridge confirmed. Now vote for your preferred Wenatchee-area lodging.</p>
             <div class="vote-buttons" id="voteButtons">
-                <button class="vote-btn" onclick="selectVote(this, 'mission')">MISSION RIDGE — Locals' Pick • Dry Powder
-                    • Wenatchee Scene</button>
-                <button class="vote-btn" onclick="selectVote(this, 'whitepass')">WHITE PASS — Locals' Pick • Chill Vibes
-                    • Packwood A-Frames</button>
-                <button class="vote-btn" onclick="selectVote(this, 'crystal')">CRYSTAL MOUNTAIN — The Prestige Play •
-                    Robert's Pick</button>
-                <button class="vote-btn" onclick="selectVote(this, 'dealer')">DEALER'S CHOICE — Trust The Game
-                    Master</button>
+                <button class="vote-btn" onclick="selectVote(this, 'whispering')">WHISPERING RIDGE RETREAT — Closest to slopes • Hot tub • $375+</button>
+                <button class="vote-btn" onclick="selectVote(this, 'docroy')">DOC ROY'S A-FRAME — Fish Lake • 2.5 acres secluded • $435+</button>
+                <button class="vote-btn" onclick="selectVote(this, 'eastwen')">EAST WENATCHEE HOME — Close to Brewers Row • Fenced yard • $350+</button>
+                <button class="vote-btn" onclick="selectVote(this, 'cashmere')">CASHMERE FOOTHILLS — 5 acres forest • Total seclusion • $400+</button>
+                <button class="vote-btn" onclick="selectVote(this, 'river')">WENATCHEE RIVER CABIN — Riverfront hot tub • On the water • $380+</button>
+                <button class="vote-btn" onclick="selectVote(this, 'dealer')">DEALER'S CHOICE — Trust The Game Master</button>
             </div>
             <button class="btn btn-primary" onclick="submitVote()" id="submitBtn" style="display:none;">CONFIRM
                 SELECTION</button>
@@ -2600,9 +2557,11 @@
 
         let selectedVote = null;
         const voteLabels = {
-            'mission': 'MISSION RIDGE — Dry Powder + Wenatchee Scene',
-            'whitepass': 'WHITE PASS — Chill Vibes + Packwood A-Frames',
-            'crystal': 'CRYSTAL MOUNTAIN — The Prestige Play',
+            'whispering': 'WHISPERING RIDGE RETREAT — Closest to slopes',
+            'docroy': "DOC ROY'S A-FRAME — Fish Lake, secluded",
+            'eastwen': 'EAST WENATCHEE HOME — Close to Brewers Row',
+            'cashmere': 'CASHMERE FOOTHILLS — Forest seclusion',
+            'river': 'WENATCHEE RIVER CABIN — Riverfront hot tub',
             'dealer': "DEALER'S CHOICE — Trust The Game Master"
         };
 
@@ -2615,12 +2574,12 @@
 
         function submitVote() {
             if (selectedVote) {
-                const subject = encodeURIComponent('🎿 THE GAME — My Vote Is In');
+                const subject = encodeURIComponent('🏠 THE GAME — Lodging Vote');
                 const body = encodeURIComponent(
                     `Game Master,\n\n` +
-                    `I have reviewed the intelligence briefing and cast my vote.\n\n` +
+                    `I have reviewed the Wenatchee-area safehouses and cast my lodging vote.\n\n` +
                     `MY SELECTION: ${voteLabels[selectedVote]}\n\n` +
-                    `The Game continues.\n\n` +
+                    `Mission Ridge awaits.\n\n` +
                     `— [Your Name]`
                 );
 
@@ -2650,6 +2609,18 @@
                 }
             });
         });
+
+        // Toggle archived resorts
+        function toggleArchived(btn) {
+            const archived = document.getElementById('archived-resorts');
+            if (archived.style.display === 'none') {
+                archived.style.display = 'block';
+                btn.textContent = 'HIDE ARCHIVED RESORTS';
+            } else {
+                archived.style.display = 'none';
+                btn.textContent = 'SHOW ARCHIVED RESORTS';
+            }
+        }
 
         // Genre voting
         function voteGenre(btn) {
