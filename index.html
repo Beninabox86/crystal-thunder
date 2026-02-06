@@ -67,7 +67,7 @@
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
-            opacity: 0.15;
+            opacity: 0.35;
         }
 
         .puzzle-piece {
@@ -2545,7 +2545,7 @@
                 piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
                 piece.style.left = Math.random() * 100 + '%';
                 piece.style.animationDuration = (Math.random() * 20 + 15) + 's';
-                piece.style.animationDelay = Math.random() * 15 + 's';
+                piece.style.animationDelay = Math.random() * 5 + 's';
                 piece.style.fontSize = (Math.random() * 15 + 15) + 'px';
                 container.appendChild(piece);
             }
