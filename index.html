@@ -1363,62 +1363,30 @@
                 <div class="dossier-title">OPERATIONAL AREA MAP</div>
                 <div class="dossier-classification">TERRAIN INTEL</div>
             </div>
-            <div style="position: relative; background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 50%, #1a2520 100%); border-radius: 4px; padding: 2rem; margin-top: 1rem; min-height: 300px; overflow: hidden;">
-                <!-- Mountain texture overlay -->
-                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><polygon fill=\"%23ffffff\" points=\"0,100 50,20 100,100\"/></svg>'); background-size: 200px; background-repeat: repeat-x; background-position: bottom;"></div>
-
-                <!-- Mission Ridge - Top -->
-                <div style="position: absolute; top: 15%; left: 50%; transform: translateX(-50%); text-align: center;">
-                    <div style="width: 60px; height: 60px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1.5rem;">⛷️</div>
-                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em;">MISSION RIDGE</div>
-                    <div style="font-size: 0.65rem; color: var(--silver);">6,820' summit</div>
+            <div style="margin-top: 1rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--steel);">
+                <iframe
+                    title="Mission Ridge and Wenatchee Area Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d172098.0744856686!2d-120.5!3d47.35!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x549a4c7f3a5d3e9d%3A0x9f5a9e5e5e5e5e5e!2sMission%20Ridge%20Ski%20%26%20Board%20Resort!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus&maptype=terrain"
+                    width="100%"
+                    height="400"
+                    style="border:0; display: block; filter: saturate(0.8) contrast(1.1);"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; font-size: 0.8rem;">
+                <div style="color: var(--silver);">
+                    <strong style="color: var(--gold);">⛷️ Mission Ridge</strong><br>
+                    Ski resort — 6,820' summit
                 </div>
-
-                <!-- Whispering Ridge - Near Mission Ridge -->
-                <div style="position: absolute; top: 35%; left: 35%; text-align: center;">
-                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem; border: 2px solid var(--gold);"></div>
-                    <div style="font-size: 0.6rem; color: var(--bone);">Whispering Ridge</div>
-                    <div style="font-size: 0.55rem; color: var(--silver);">6 mi to slopes</div>
+                <div style="color: var(--silver);">
+                    <strong style="color: var(--bone);">🍺 Wenatchee</strong><br>
+                    Downtown — Brewers Row, nightlife
                 </div>
-
-                <!-- Fish Lake / Doc Roy's -->
-                <div style="position: absolute; top: 30%; left: 70%; text-align: center;">
-                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem; border: 2px solid var(--gold);"></div>
-                    <div style="font-size: 0.6rem; color: var(--bone);">Doc Roy's A-Frame</div>
-                    <div style="font-size: 0.55rem; color: var(--silver);">Fish Lake</div>
+                <div style="color: var(--silver);">
+                    <strong style="color: var(--bone);">🏠 Lodging Zone</strong><br>
+                    All options 20-30 min to slopes
                 </div>
-
-                <!-- Cashmere -->
-                <div style="position: absolute; top: 55%; left: 20%; text-align: center;">
-                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem;"></div>
-                    <div style="font-size: 0.6rem; color: var(--bone);">Cashmere</div>
-                    <div style="font-size: 0.55rem; color: var(--silver);">30 min to slopes</div>
-                </div>
-
-                <!-- Wenatchee - Center bottom -->
-                <div style="position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
-                    <div style="width: 50px; height: 50px; background: var(--charcoal); border: 2px solid var(--bone); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1.2rem;">🍺</div>
-                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--bone); letter-spacing: 0.1em;">WENATCHEE</div>
-                    <div style="font-size: 0.65rem; color: var(--silver);">Brewers Row • Nightlife</div>
-                </div>
-
-                <!-- East Wenatchee -->
-                <div style="position: absolute; bottom: 25%; right: 20%; text-align: center;">
-                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem;"></div>
-                    <div style="font-size: 0.6rem; color: var(--bone);">East Wenatchee</div>
-                    <div style="font-size: 0.55rem; color: var(--silver);">5 min to downtown</div>
-                </div>
-
-                <!-- River Cabin -->
-                <div style="position: absolute; top: 45%; left: 55%; text-align: center;">
-                    <div style="width: 12px; height: 12px; background: var(--bone); border-radius: 50%; margin: 0 auto 0.25rem;"></div>
-                    <div style="font-size: 0.6rem; color: var(--bone);">River Cabin</div>
-                    <div style="font-size: 0.55rem; color: var(--silver);">Monitor</div>
-                </div>
-
-                <!-- Columbia River indication -->
-                <div style="position: absolute; bottom: 10%; left: 10%; right: 10%; height: 3px; background: linear-gradient(90deg, transparent, rgba(100,150,200,0.3), rgba(100,150,200,0.5), rgba(100,150,200,0.3), transparent); border-radius: 2px;"></div>
-                <div style="position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); font-size: 0.55rem; color: rgba(100,150,200,0.6); letter-spacing: 0.2em;">COLUMBIA RIVER</div>
             </div>
         </div>
 
