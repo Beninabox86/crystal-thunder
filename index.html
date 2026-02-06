@@ -1363,29 +1363,39 @@
                 <div class="dossier-title">OPERATIONAL AREA MAP</div>
                 <div class="dossier-classification">TERRAIN INTEL</div>
             </div>
-            <div style="margin-top: 1rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--steel);">
+            <div style="position: relative; margin-top: 1rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--steel);">
                 <iframe
                     title="Mission Ridge and Wenatchee Area Map"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d172098.0744856686!2d-120.5!3d47.35!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x549a4c7f3a5d3e9d%3A0x9f5a9e5e5e5e5e5e!2sMission%20Ridge%20Ski%20%26%20Board%20Resort!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus&maptype=terrain"
                     width="100%"
                     height="400"
-                    style="border:0; display: block; filter: saturate(0.8) contrast(1.1);"
+                    style="border:0; display: block; filter: saturate(0.7) brightness(0.85);"
                     allowfullscreen=""
                     loading="lazy">
                 </iframe>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; font-size: 0.8rem;">
-                <div style="color: var(--silver);">
-                    <strong style="color: var(--gold);">⛷️ Mission Ridge</strong><br>
-                    Ski resort — 6,820' summit
+                <!-- SVG Overlay -->
+                <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <!-- Connection lines -->
+                    <line x1="50" y1="25" x2="50" y2="70" stroke="rgba(212,168,42,0.4)" stroke-width="0.3" stroke-dasharray="1,1"/>
+                    <line x1="50" y1="70" x2="30" y2="55" stroke="rgba(224,224,232,0.3)" stroke-width="0.2" stroke-dasharray="0.5,0.5"/>
+                    <line x1="50" y1="70" x2="70" y2="60" stroke="rgba(224,224,232,0.3)" stroke-width="0.2" stroke-dasharray="0.5,0.5"/>
+                </svg>
+                <!-- Location markers -->
+                <div style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                    <div style="width: 12px; height: 12px; background: var(--gold); border: 2px solid rgba(0,0,0,0.5); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 10px rgba(212,168,42,0.6);"></div>
+                    <div style="margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--gold); text-shadow: 0 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.05em; white-space: nowrap;">MISSION RIDGE</div>
                 </div>
-                <div style="color: var(--silver);">
-                    <strong style="color: var(--bone);">🍺 Wenatchee</strong><br>
-                    Downtown — Brewers Row, nightlife
+                <div style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                    <div style="width: 10px; height: 10px; background: var(--bone); border: 2px solid rgba(0,0,0,0.5); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 8px rgba(224,224,232,0.5);"></div>
+                    <div style="margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; color: var(--bone); text-shadow: 0 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.05em; white-space: nowrap;">WENATCHEE</div>
                 </div>
-                <div style="color: var(--silver);">
-                    <strong style="color: var(--bone);">🏠 Lodging Zone</strong><br>
-                    All options 20-30 min to slopes
+                <div style="position: absolute; top: 55%; left: 30%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                    <div style="width: 6px; height: 6px; background: var(--bone); border: 1px solid rgba(0,0,0,0.4); border-radius: 50%; margin: 0 auto; opacity: 0.8;"></div>
+                    <div style="margin-top: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.45rem; color: var(--silver); text-shadow: 0 1px 2px rgba(0,0,0,0.8); white-space: nowrap;">CASHMERE</div>
+                </div>
+                <div style="position: absolute; top: 60%; left: 70%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                    <div style="width: 6px; height: 6px; background: var(--bone); border: 1px solid rgba(0,0,0,0.4); border-radius: 50%; margin: 0 auto; opacity: 0.8;"></div>
+                    <div style="margin-top: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.45rem; color: var(--silver); text-shadow: 0 1px 2px rgba(0,0,0,0.8); white-space: nowrap;">E. WENATCHEE</div>
                 </div>
             </div>
         </div>
