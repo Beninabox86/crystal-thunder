@@ -28,6 +28,17 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <style>
+        /* Dark popup for Leaflet */
+        .dark-popup .leaflet-popup-content-wrapper {
+            background: #1c1c22;
+            border: 1px solid #3a3a48;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .dark-popup .leaflet-popup-tip { background: #1c1c22; }
+        .dark-popup .leaflet-popup-close-button { color: #888; }
+        .leaflet-container { background: #141418; }
+
         :root {
             --black: #141418;
             --dark: #1c1c22;
@@ -2509,7 +2520,7 @@
         createPuzzle();
 
         // Initialize interactive area map
-        const areaMap = L.map('areaMap', { zoomControl: true }).setView([47.38, -120.38], 11);
+        const areaMap = L.map('areaMap', { zoomControl: true }).setView([47.38, -120.40], 11);
 
         // Dark-themed map tiles
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -2518,75 +2529,90 @@
             maxZoom: 17
         }).addTo(areaMap);
 
-        // Custom labeled marker with pointer line
-        function createLabeledMarker(lat, lng, label, sublabel, color, isMain) {
-            const size = isMain ? 16 : 10;
+        // Smart labeled marker with configurable pointer direction
+        function addMarker(lat, lng, label, color, opts = {}) {
+            const { side = 'right', size = 10, lineLen = 30, sub = '', offset = 0 } = opts;
+            const isLeft = side === 'left';
+
             const marker = L.marker([lat, lng], {
                 icon: L.divIcon({
-                    className: 'custom-marker',
-                    html: `<div style="position:relative;">
-                        <div style="width:${size}px;height:${size}px;background:${color};border:2px solid rgba(0,0,0,0.5);border-radius:50%;box-shadow:0 0 ${size}px ${color}90;"></div>
-                        <div style="position:absolute;left:${size+4}px;top:50%;transform:translateY(-50%);white-space:nowrap;">
-                            <svg width="20" height="2" style="vertical-align:middle;margin-right:3px;"><line x1="0" y1="1" x2="20" y2="1" stroke="${color}" stroke-width="1.5" opacity="0.7"/></svg>
-                            <span style="font-family:'IBM Plex Mono',monospace;font-size:${isMain?'11px':'9px'};color:${color};text-shadow:0 0 4px #000,0 0 4px #000;letter-spacing:0.5px;font-weight:${isMain?'bold':'normal'};">${label}</span>
-                            ${sublabel ? `<br><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#888;text-shadow:0 0 3px #000;margin-left:23px;">${sublabel}</span>` : ''}
+                    className: 'map-marker',
+                    html: `<div style="position:relative;width:${size}px;height:${size}px;">
+                        <div style="width:${size}px;height:${size}px;background:${color};border:2px solid rgba(0,0,0,0.6);border-radius:50%;box-shadow:0 0 8px ${color}80;"></div>
+                        <div style="position:absolute;${isLeft ? 'right' : 'left'}:${size+2}px;top:50%;transform:translateY(-50%) translateY(${offset}px);white-space:nowrap;display:flex;align-items:center;${isLeft ? 'flex-direction:row-reverse;' : ''}">
+                            <svg width="${lineLen}" height="2" style="flex-shrink:0;"><line x1="0" y1="1" x2="${lineLen}" y2="1" stroke="${color}" stroke-width="1" opacity="0.6"/></svg>
+                            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:${color};text-shadow:0 1px 2px #000,0 0 6px #000;letter-spacing:0.3px;padding:0 4px;">${label}</span>
                         </div>
+                        ${sub ? `<div style="position:absolute;${isLeft ? 'right' : 'left'}:${size+lineLen+6}px;top:calc(50% + 10px);transform:translateY(${offset}px);white-space:nowrap;">
+                            <span style="font-family:'IBM Plex Mono',monospace;font-size:7px;color:#777;text-shadow:0 1px 2px #000;">${sub}</span>
+                        </div>` : ''}
                     </div>`,
-                    iconSize: [200, 30],
+                    iconSize: [250, 40],
                     iconAnchor: [size/2, size/2]
                 })
             });
+            marker.addTo(areaMap);
             return marker;
         }
 
-        // === THE DESTINATION ===
         const missionRidge = [47.2917, -120.4019];
-        createLabeledMarker(47.2917, -120.4019, '⛷️ MISSION RIDGE', '2,000 acres • 25 min from town', '#d4a82a', true).addTo(areaMap);
+        const downtown = [47.423, -120.308];
 
-        // === LODGING OPTIONS (green) - with drive times ===
-        const lodging = [
-            { coords: [47.32, -120.42], name: 'WHISPERING RIDGE', time: '6 mi to slopes', priority: 'SLOPES' },
-            { coords: [47.42, -120.58], name: "DOC ROY'S A-FRAME", time: 'Fish Lake • secluded', priority: 'VIBE' },
-            { coords: [47.415, -120.29], name: 'EAST WENATCHEE', time: '5 min to downtown', priority: 'NIGHTLIFE' },
-            { coords: [47.52, -120.47], name: 'CASHMERE', time: '30 min to slopes', priority: 'BALANCED' },
-            { coords: [47.49, -120.43], name: 'RIVER CABIN', time: 'On the Wenatchee River', priority: 'BALANCED' },
-        ];
-        lodging.forEach(l => {
-            createLabeledMarker(l.coords[0], l.coords[1], '🏠 ' + l.name, l.time, '#4ade80', false).addTo(areaMap);
-            // Draw line to Mission Ridge showing the commute
-            L.polyline([l.coords, missionRidge], { color: '#4ade80', weight: 1.5, opacity: 0.3, dashArray: '4,6' }).addTo(areaMap);
+        // === MISSION RIDGE - The Destination ===
+        addMarker(47.2917, -120.4019, '⛷️ MISSION RIDGE', '#d4a82a', { size: 14, lineLen: 40, sub: '2,000 acres · dry powder' });
+
+        // === LODGING - Spread out, alternating sides ===
+        addMarker(47.33, -120.40, '🏠 WHISPERING RIDGE', '#4ade80', { side: 'left', lineLen: 25, sub: '6 mi → closest to slopes' });
+        L.polyline([[47.33, -120.40], missionRidge], { color: '#4ade80', weight: 1.5, opacity: 0.25, dashArray: '4,8' }).addTo(areaMap);
+
+        addMarker(47.42, -120.56, "🏠 DOC ROY'S", '#4ade80', { side: 'left', lineLen: 20, sub: 'Fish Lake · A-frame vibes' });
+        L.polyline([[47.42, -120.56], missionRidge], { color: '#4ade80', weight: 1.5, opacity: 0.25, dashArray: '4,8' }).addTo(areaMap);
+
+        addMarker(47.415, -120.27, '🏠 E. WENATCHEE', '#4ade80', { side: 'right', lineLen: 25, sub: '5 min → downtown nightlife' });
+        L.polyline([[47.415, -120.27], downtown], { color: '#ec4899', weight: 1.5, opacity: 0.35, dashArray: '3,6' }).addTo(areaMap);
+
+        addMarker(47.51, -120.48, '🏠 CASHMERE', '#4ade80', { side: 'left', lineLen: 20, sub: 'charming town · bakeries' });
+
+        addMarker(47.47, -120.41, '🏠 RIVER CABIN', '#4ade80', { side: 'right', lineLen: 30, sub: 'Wenatchee River · secluded', offset: -5 });
+
+        // === DOWNTOWN WENATCHEE - One clean cluster ===
+        // Action zone circle
+        L.circle(downtown, { radius: 1200, color: '#60a0ff', fillColor: '#60a0ff', fillOpacity: 0.06, weight: 1, dashArray: '4,4' }).addTo(areaMap);
+
+        // Main downtown marker with popup for all venues
+        const dtMarker = L.marker(downtown, {
+            icon: L.divIcon({
+                className: 'downtown-marker',
+                html: `<div style="position:relative;">
+                    <div style="width:16px;height:16px;background:#60a0ff;border:2px solid rgba(0,0,0,0.6);border-radius:50%;box-shadow:0 0 12px #60a0ff90;"></div>
+                    <div style="position:absolute;left:22px;top:50%;transform:translateY(-50%);white-space:nowrap;">
+                        <svg width="35" height="2"><line x1="0" y1="1" x2="35" y2="1" stroke="#60a0ff" stroke-width="1.5" opacity="0.7"/></svg>
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#60a0ff;text-shadow:0 1px 3px #000,0 0 8px #000;font-weight:bold;padding-left:4px;">WENATCHEE</span>
+                        <br><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#999;text-shadow:0 1px 2px #000;padding-left:39px;">tap for venues →</span>
+                    </div>
+                </div>`,
+                iconSize: [200, 40],
+                iconAnchor: [8, 8]
+            })
+        }).addTo(areaMap);
+
+        dtMarker.bindPopup(`
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;min-width:180px;">
+                <div style="color:#60a0ff;font-weight:bold;margin-bottom:8px;">🍺 BREWERS ROW</div>
+                <div style="color:#888;font-size:10px;margin-bottom:6px;">Wenatchee Valley · Badger Mtn<br>Saddle Rock · Columbia Valley</div>
+                <div style="color:#f97316;font-weight:bold;margin-top:10px;">🍔 EATS</div>
+                <div style="color:#888;font-size:10px;margin-bottom:6px;">Pybus Market · McGlinn's<br>Rail Station · Dusty's</div>
+                <div style="color:#ec4899;font-weight:bold;margin-top:10px;">🎱 NIGHTLIFE</div>
+                <div style="color:#888;font-size:10px;margin-bottom:6px;">Tap & Putt · Sidecar Lounge<br>KAOS Bar · Wally's</div>
+                <div style="color:#a855f7;font-weight:bold;margin-top:10px;">🍷 WINE</div>
+                <div style="color:#888;font-size:10px;">Chateau Faire le Pont</div>
+            </div>
+        `, { className: 'dark-popup' });
+
+        // Small accent dots for key spots (no labels, just visual density)
+        [[47.419,-120.305,'#f97316'], [47.427,-120.315,'#f97316'], [47.421,-120.300,'#ec4899'], [47.425,-120.312,'#60a0ff']].forEach(p => {
+            L.circleMarker([p[0],p[1]], { radius: 4, color: p[2], fillColor: p[2], fillOpacity: 0.7, weight: 0 }).addTo(areaMap);
         });
-
-        // === DOWNTOWN WENATCHEE - The Fun Zone ===
-        const downtownCenter = [47.423, -120.31];
-
-        // Breweries (blue)
-        const breweries = [
-            { coords: [47.4245, -120.312], name: 'WENATCHEE VALLEY BREWING' },
-            { coords: [47.4225, -120.308], name: 'BADGER MOUNTAIN' },
-            { coords: [47.4215, -120.315], name: 'SADDLE ROCK' },
-            { coords: [47.4255, -120.305], name: 'COLUMBIA VALLEY' },
-        ];
-        // Group marker for Brewers Row
-        createLabeledMarker(47.424, -120.31, '🍺 BREWERS ROW', '4 craft breweries walkable', '#60a0ff', true).addTo(areaMap);
-
-        // Food & Market (orange)
-        createLabeledMarker(47.419, -120.305, '🍔 PYBUS MARKET', 'Food hall + local eats', '#f97316', false).addTo(areaMap);
-        createLabeledMarker(47.427, -120.318, '🍔 McGLINNS', 'Wood-fired + burgers', '#f97316', false).addTo(areaMap);
-
-        // Nightlife (pink/magenta)
-        createLabeledMarker(47.421, -120.302, '🎱 TAP & PUTT', 'Mini golf + bingo + drinks', '#ec4899', false).addTo(areaMap);
-        createLabeledMarker(47.426, -120.308, '🍸 SIDECAR LOUNGE', 'Craft cocktails', '#ec4899', false).addTo(areaMap);
-
-        // Wine (purple)
-        createLabeledMarker(47.415, -120.325, '🍷 CHATEAU FAIRE', 'Winery + restaurant', '#a855f7', false).addTo(areaMap);
-
-        // === DECISION MATRIX VISUALIZATION ===
-        // Circle showing "downtown action zone"
-        L.circle(downtownCenter, { radius: 1500, color: '#60a0ff', fillColor: '#60a0ff', fillOpacity: 0.08, weight: 1, dashArray: '5,5' }).addTo(areaMap);
-
-        // Line from East Wenatchee lodging to downtown (showing nightlife priority)
-        L.polyline([[47.415, -120.29], downtownCenter], { color: '#ec4899', weight: 2, opacity: 0.4, dashArray: '3,6' }).addTo(areaMap);
 
         function openModal() { document.getElementById('modal').classList.add('active'); }
         function closeModal() { document.getElementById('modal').classList.remove('active'); }
