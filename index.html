@@ -1367,10 +1367,14 @@
                 <div class="dossier-classification">INTERACTIVE</div>
             </div>
             <div id="areaMap" style="height: 450px; margin-top: 1rem; border-radius: 4px; border: 1px solid var(--steel);"></div>
-            <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.7rem; font-family: 'IBM Plex Mono', monospace;">
-                <div><span style="display: inline-block; width: 10px; height: 10px; background: #d4a82a; border-radius: 50%; margin-right: 5px;"></span><span style="color: var(--gold);">SKI RESORT</span></div>
-                <div><span style="display: inline-block; width: 10px; height: 10px; background: #e0e0e8; border-radius: 50%; margin-right: 5px;"></span><span style="color: var(--bone);">LODGING OPTIONS</span></div>
-                <div><span style="display: inline-block; width: 10px; height: 10px; background: #60a0ff; border-radius: 50%; margin-right: 5px;"></span><span style="color: #60a0ff;">TOWN / NIGHTLIFE</span></div>
+            <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 1.25rem; font-size: 0.65rem; font-family: 'IBM Plex Mono', monospace; opacity: 0.9;">
+                <div><span style="display: inline-block; width: 8px; height: 8px; background: #d4a82a; border-radius: 50%; margin-right: 4px;"></span><span style="color: #d4a82a;">THE MOUNTAIN</span></div>
+                <div><span style="display: inline-block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%; margin-right: 4px;"></span><span style="color: #4ade80;">LODGING</span></div>
+                <div><span style="display: inline-block; width: 8px; height: 8px; background: #60a0ff; border-radius: 50%; margin-right: 4px;"></span><span style="color: #60a0ff;">BREWERIES</span></div>
+                <div><span style="display: inline-block; width: 8px; height: 8px; background: #f97316; border-radius: 50%; margin-right: 4px;"></span><span style="color: #f97316;">FOOD</span></div>
+                <div><span style="display: inline-block; width: 8px; height: 8px; background: #ec4899; border-radius: 50%; margin-right: 4px;"></span><span style="color: #ec4899;">NIGHTLIFE</span></div>
+                <div><span style="display: inline-block; width: 8px; height: 8px; background: #a855f7; border-radius: 50%; margin-right: 4px;"></span><span style="color: #a855f7;">WINE</span></div>
+                <div style="color: var(--silver); margin-left: 0.5rem;">— dashed lines show drive routes</div>
             </div>
         </div>
 
@@ -2505,66 +2509,84 @@
         createPuzzle();
 
         // Initialize interactive area map
-        const areaMap = L.map('areaMap').setView([47.35, -120.42], 10);
+        const areaMap = L.map('areaMap', { zoomControl: true }).setView([47.38, -120.38], 11);
 
         // Dark-themed map tiles
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            attribution: '©OSM ©CARTO',
             subdomains: 'abcd',
-            maxZoom: 19
+            maxZoom: 17
         }).addTo(areaMap);
 
-        // Custom marker icons
-        function createIcon(color, size) {
-            return L.divIcon({
-                className: 'custom-marker',
-                html: `<div style="
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: ${color};
-                    border: 2px solid rgba(0,0,0,0.4);
-                    border-radius: 50%;
-                    box-shadow: 0 0 ${size}px ${color}80;
-                "></div>`,
-                iconSize: [size, size],
-                iconAnchor: [size/2, size/2]
+        // Custom labeled marker with pointer line
+        function createLabeledMarker(lat, lng, label, sublabel, color, isMain) {
+            const size = isMain ? 16 : 10;
+            const marker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="position:relative;">
+                        <div style="width:${size}px;height:${size}px;background:${color};border:2px solid rgba(0,0,0,0.5);border-radius:50%;box-shadow:0 0 ${size}px ${color}90;"></div>
+                        <div style="position:absolute;left:${size+4}px;top:50%;transform:translateY(-50%);white-space:nowrap;">
+                            <svg width="20" height="2" style="vertical-align:middle;margin-right:3px;"><line x1="0" y1="1" x2="20" y2="1" stroke="${color}" stroke-width="1.5" opacity="0.7"/></svg>
+                            <span style="font-family:'IBM Plex Mono',monospace;font-size:${isMain?'11px':'9px'};color:${color};text-shadow:0 0 4px #000,0 0 4px #000;letter-spacing:0.5px;font-weight:${isMain?'bold':'normal'};">${label}</span>
+                            ${sublabel ? `<br><span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#888;text-shadow:0 0 3px #000;margin-left:23px;">${sublabel}</span>` : ''}
+                        </div>
+                    </div>`,
+                    iconSize: [200, 30],
+                    iconAnchor: [size/2, size/2]
+                })
             });
+            return marker;
         }
 
-        const goldIcon = createIcon('#d4a82a', 18);
-        const whiteIcon = createIcon('#e0e0e8', 14);
-        const blueIcon = createIcon('#60a0ff', 14);
+        // === THE DESTINATION ===
+        const missionRidge = [47.2917, -120.4019];
+        createLabeledMarker(47.2917, -120.4019, '⛷️ MISSION RIDGE', '2,000 acres • 25 min from town', '#d4a82a', true).addTo(areaMap);
 
-        // Locations with exact coordinates
-        const locations = [
-            { lat: 47.2917, lng: -120.4019, name: '⛷️ MISSION RIDGE', desc: 'Ski Resort — 2,000 acres, 2,250\' vertical', icon: goldIcon },
-            { lat: 47.4235, lng: -120.3103, name: '🍺 WENATCHEE', desc: 'Downtown — Brewers Row, Pybus Market, nightlife', icon: blueIcon },
-            { lat: 47.4157, lng: -120.2862, name: '🏠 EAST WENATCHEE', desc: 'Lodging option — 25 min to slopes, close to downtown', icon: whiteIcon },
-            { lat: 47.5224, lng: -120.4696, name: '🏠 CASHMERE', desc: 'Lodging option — 30 min to slopes, charming town', icon: whiteIcon },
-            { lat: 47.4897, lng: -120.4267, name: '🏠 MONITOR', desc: 'River Cabin area — 20 min to slopes, on the river', icon: whiteIcon },
-            { lat: 47.3450, lng: -120.3100, name: '🏠 WHISPERING RIDGE', desc: 'Lodging option — 6 mi to slopes, closest!', icon: whiteIcon },
-            { lat: 47.4400, lng: -120.5800, name: '🏠 FISH LAKE', desc: 'Doc Roy\'s A-Frame area — secluded, lake views', icon: whiteIcon },
+        // === LODGING OPTIONS (green) - with drive times ===
+        const lodging = [
+            { coords: [47.32, -120.42], name: 'WHISPERING RIDGE', time: '6 mi to slopes', priority: 'SLOPES' },
+            { coords: [47.42, -120.58], name: "DOC ROY'S A-FRAME", time: 'Fish Lake • secluded', priority: 'VIBE' },
+            { coords: [47.415, -120.29], name: 'EAST WENATCHEE', time: '5 min to downtown', priority: 'NIGHTLIFE' },
+            { coords: [47.52, -120.47], name: 'CASHMERE', time: '30 min to slopes', priority: 'BALANCED' },
+            { coords: [47.49, -120.43], name: 'RIVER CABIN', time: 'On the Wenatchee River', priority: 'BALANCED' },
         ];
-
-        // Add markers with popups
-        locations.forEach(loc => {
-            L.marker([loc.lat, loc.lng], { icon: loc.icon })
-                .addTo(areaMap)
-                .bindPopup(`
-                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">
-                        <strong style="color: #d4a82a;">${loc.name}</strong><br>
-                        <span style="color: #666;">${loc.desc}</span>
-                    </div>
-                `);
+        lodging.forEach(l => {
+            createLabeledMarker(l.coords[0], l.coords[1], '🏠 ' + l.name, l.time, '#4ade80', false).addTo(areaMap);
+            // Draw line to Mission Ridge showing the commute
+            L.polyline([l.coords, missionRidge], { color: '#4ade80', weight: 1.5, opacity: 0.3, dashArray: '4,6' }).addTo(areaMap);
         });
 
-        // Draw connection lines from Mission Ridge to Wenatchee
-        L.polyline([[47.2917, -120.4019], [47.4235, -120.3103]], {
-            color: '#d4a82a',
-            weight: 2,
-            opacity: 0.5,
-            dashArray: '5, 10'
-        }).addTo(areaMap);
+        // === DOWNTOWN WENATCHEE - The Fun Zone ===
+        const downtownCenter = [47.423, -120.31];
+
+        // Breweries (blue)
+        const breweries = [
+            { coords: [47.4245, -120.312], name: 'WENATCHEE VALLEY BREWING' },
+            { coords: [47.4225, -120.308], name: 'BADGER MOUNTAIN' },
+            { coords: [47.4215, -120.315], name: 'SADDLE ROCK' },
+            { coords: [47.4255, -120.305], name: 'COLUMBIA VALLEY' },
+        ];
+        // Group marker for Brewers Row
+        createLabeledMarker(47.424, -120.31, '🍺 BREWERS ROW', '4 craft breweries walkable', '#60a0ff', true).addTo(areaMap);
+
+        // Food & Market (orange)
+        createLabeledMarker(47.419, -120.305, '🍔 PYBUS MARKET', 'Food hall + local eats', '#f97316', false).addTo(areaMap);
+        createLabeledMarker(47.427, -120.318, '🍔 McGLINNS', 'Wood-fired + burgers', '#f97316', false).addTo(areaMap);
+
+        // Nightlife (pink/magenta)
+        createLabeledMarker(47.421, -120.302, '🎱 TAP & PUTT', 'Mini golf + bingo + drinks', '#ec4899', false).addTo(areaMap);
+        createLabeledMarker(47.426, -120.308, '🍸 SIDECAR LOUNGE', 'Craft cocktails', '#ec4899', false).addTo(areaMap);
+
+        // Wine (purple)
+        createLabeledMarker(47.415, -120.325, '🍷 CHATEAU FAIRE', 'Winery + restaurant', '#a855f7', false).addTo(areaMap);
+
+        // === DECISION MATRIX VISUALIZATION ===
+        // Circle showing "downtown action zone"
+        L.circle(downtownCenter, { radius: 1500, color: '#60a0ff', fillColor: '#60a0ff', fillOpacity: 0.08, weight: 1, dashArray: '5,5' }).addTo(areaMap);
+
+        // Line from East Wenatchee lodging to downtown (showing nightlife priority)
+        L.polyline([[47.415, -120.29], downtownCenter], { color: '#ec4899', weight: 2, opacity: 0.4, dashArray: '3,6' }).addTo(areaMap);
 
         function openModal() { document.getElementById('modal').classList.add('active'); }
         function closeModal() { document.getElementById('modal').classList.remove('active'); }
