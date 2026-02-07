@@ -24,6 +24,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+    <!-- Leaflet.js for interactive maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <style>
         :root {
             --black: #141418;
@@ -1361,41 +1364,13 @@
         <div class="dossier" style="margin-bottom: 2rem;">
             <div class="dossier-header">
                 <div class="dossier-title">OPERATIONAL AREA MAP</div>
-                <div class="dossier-classification">TERRAIN INTEL</div>
+                <div class="dossier-classification">INTERACTIVE</div>
             </div>
-            <div style="position: relative; margin-top: 1rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--steel);">
-                <iframe
-                    title="Mission Ridge and Wenatchee Area Map"
-                    src="https://www.openstreetmap.org/export/embed.html?bbox=-120.8%2C47.15%2C-120.1%2C47.55&layer=mapnik"
-                    width="100%"
-                    height="400"
-                    style="border:0; display: block; filter: saturate(0.8) brightness(0.9) contrast(1.1);"
-                    loading="lazy">
-                </iframe>
-                <!-- SVG Overlay -->
-                <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <!-- Connection lines -->
-                    <line x1="50" y1="25" x2="50" y2="70" stroke="rgba(212,168,42,0.4)" stroke-width="0.3" stroke-dasharray="1,1"/>
-                    <line x1="50" y1="70" x2="30" y2="55" stroke="rgba(224,224,232,0.3)" stroke-width="0.2" stroke-dasharray="0.5,0.5"/>
-                    <line x1="50" y1="70" x2="70" y2="60" stroke="rgba(224,224,232,0.3)" stroke-width="0.2" stroke-dasharray="0.5,0.5"/>
-                </svg>
-                <!-- Location markers -->
-                <div style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                    <div style="width: 12px; height: 12px; background: var(--gold); border: 2px solid rgba(0,0,0,0.5); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 10px rgba(212,168,42,0.6);"></div>
-                    <div style="margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--gold); text-shadow: 0 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.05em; white-space: nowrap;">MISSION RIDGE</div>
-                </div>
-                <div style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                    <div style="width: 10px; height: 10px; background: var(--bone); border: 2px solid rgba(0,0,0,0.5); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 8px rgba(224,224,232,0.5);"></div>
-                    <div style="margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; color: var(--bone); text-shadow: 0 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.05em; white-space: nowrap;">WENATCHEE</div>
-                </div>
-                <div style="position: absolute; top: 55%; left: 30%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                    <div style="width: 6px; height: 6px; background: var(--bone); border: 1px solid rgba(0,0,0,0.4); border-radius: 50%; margin: 0 auto; opacity: 0.8;"></div>
-                    <div style="margin-top: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.45rem; color: var(--silver); text-shadow: 0 1px 2px rgba(0,0,0,0.8); white-space: nowrap;">CASHMERE</div>
-                </div>
-                <div style="position: absolute; top: 60%; left: 70%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                    <div style="width: 6px; height: 6px; background: var(--bone); border: 1px solid rgba(0,0,0,0.4); border-radius: 50%; margin: 0 auto; opacity: 0.8;"></div>
-                    <div style="margin-top: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.45rem; color: var(--silver); text-shadow: 0 1px 2px rgba(0,0,0,0.8); white-space: nowrap;">E. WENATCHEE</div>
-                </div>
+            <div id="areaMap" style="height: 450px; margin-top: 1rem; border-radius: 4px; border: 1px solid var(--steel);"></div>
+            <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.7rem; font-family: 'IBM Plex Mono', monospace;">
+                <div><span style="display: inline-block; width: 10px; height: 10px; background: #d4a82a; border-radius: 50%; margin-right: 5px;"></span><span style="color: var(--gold);">SKI RESORT</span></div>
+                <div><span style="display: inline-block; width: 10px; height: 10px; background: #e0e0e8; border-radius: 50%; margin-right: 5px;"></span><span style="color: var(--bone);">LODGING OPTIONS</span></div>
+                <div><span style="display: inline-block; width: 10px; height: 10px; background: #60a0ff; border-radius: 50%; margin-right: 5px;"></span><span style="color: #60a0ff;">TOWN / NIGHTLIFE</span></div>
             </div>
         </div>
 
@@ -2528,6 +2503,68 @@
             }
         }
         createPuzzle();
+
+        // Initialize interactive area map
+        const areaMap = L.map('areaMap').setView([47.35, -120.42], 10);
+
+        // Dark-themed map tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(areaMap);
+
+        // Custom marker icons
+        function createIcon(color, size) {
+            return L.divIcon({
+                className: 'custom-marker',
+                html: `<div style="
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    border: 2px solid rgba(0,0,0,0.4);
+                    border-radius: 50%;
+                    box-shadow: 0 0 ${size}px ${color}80;
+                "></div>`,
+                iconSize: [size, size],
+                iconAnchor: [size/2, size/2]
+            });
+        }
+
+        const goldIcon = createIcon('#d4a82a', 18);
+        const whiteIcon = createIcon('#e0e0e8', 14);
+        const blueIcon = createIcon('#60a0ff', 14);
+
+        // Locations with exact coordinates
+        const locations = [
+            { lat: 47.2917, lng: -120.4019, name: '⛷️ MISSION RIDGE', desc: 'Ski Resort — 2,000 acres, 2,250\' vertical', icon: goldIcon },
+            { lat: 47.4235, lng: -120.3103, name: '🍺 WENATCHEE', desc: 'Downtown — Brewers Row, Pybus Market, nightlife', icon: blueIcon },
+            { lat: 47.4157, lng: -120.2862, name: '🏠 EAST WENATCHEE', desc: 'Lodging option — 25 min to slopes, close to downtown', icon: whiteIcon },
+            { lat: 47.5224, lng: -120.4696, name: '🏠 CASHMERE', desc: 'Lodging option — 30 min to slopes, charming town', icon: whiteIcon },
+            { lat: 47.4897, lng: -120.4267, name: '🏠 MONITOR', desc: 'River Cabin area — 20 min to slopes, on the river', icon: whiteIcon },
+            { lat: 47.3450, lng: -120.3100, name: '🏠 WHISPERING RIDGE', desc: 'Lodging option — 6 mi to slopes, closest!', icon: whiteIcon },
+            { lat: 47.4400, lng: -120.5800, name: '🏠 FISH LAKE', desc: 'Doc Roy\'s A-Frame area — secluded, lake views', icon: whiteIcon },
+        ];
+
+        // Add markers with popups
+        locations.forEach(loc => {
+            L.marker([loc.lat, loc.lng], { icon: loc.icon })
+                .addTo(areaMap)
+                .bindPopup(`
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">
+                        <strong style="color: #d4a82a;">${loc.name}</strong><br>
+                        <span style="color: #666;">${loc.desc}</span>
+                    </div>
+                `);
+        });
+
+        // Draw connection lines from Mission Ridge to Wenatchee
+        L.polyline([[47.2917, -120.4019], [47.4235, -120.3103]], {
+            color: '#d4a82a',
+            weight: 2,
+            opacity: 0.5,
+            dashArray: '5, 10'
+        }).addTo(areaMap);
 
         function openModal() { document.getElementById('modal').classList.add('active'); }
         function closeModal() { document.getElementById('modal').classList.remove('active'); }
